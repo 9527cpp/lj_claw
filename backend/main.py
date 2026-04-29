@@ -1,8 +1,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from routers import models, skills, chat
+from routers import models_router, skills_router, chat_router
 
-app = FastAPI(title="lj_claw Agent")
+app = FastAPI(title="lj_claw Agent", redirect_slashes=False)
 
 app.add_middleware(
     CORSMiddleware,
@@ -12,9 +12,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(models.router, prefix="/api/models", tags=["models"])
-app.include_router(skills.router, prefix="/api/skills", tags=["skills"])
-app.include_router(chat.router, prefix="/api/chat", tags=["chat"])
+app.include_router(models_router, prefix="/api/models", tags=["models"])
+app.include_router(skills_router, prefix="/api/skills", tags=["skills"])
+app.include_router(chat_router, prefix="/api/chat", tags=["chat"])
 
 @app.get("/api/health")
 def health():

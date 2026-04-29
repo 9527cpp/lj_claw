@@ -1,4 +1,13 @@
 {
-  "models": [],
-  "active_model": null
+  "models": [
+    {
+      "id": "minimax",
+      "name": "MiniMax-M2.7",
+      "provider": "anthropic",
+      "api_key": "sk-cp-tyYyjJlncWbhNeRh_U1xZN_Ae-3HAt2MBETbJYKYu9KVkuMjS1bUViNolwdq2r7Yw6SVEolmp4T_Gg-m9jZCEtzSs4xs4rfIiD2gWLJ85ajsBH0KVRbbEyk",
+      "api_base": "https://api.minimaxi.com/anthropic",
+      "enabled": true
+    }
+  ],
+  "active_model": "minimax"
 }

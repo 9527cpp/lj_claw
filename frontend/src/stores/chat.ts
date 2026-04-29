@@ -28,7 +28,7 @@ export const useChatStore = defineStore('chat', () => {
     messages.value.push({ role: 'user', content })
 
     try {
-      const response = await fetch('/api/chat', {
+      const response = await fetch('/api/chat/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: content, model_id: modelId })
