@@ -16,6 +16,7 @@
       <button
         v-if="message.role === 'assistant'"
         class="action-btn copy-btn"
+        :class="{ copied }"
         @click="copyMessage"
         :title="copied ? '已复制' : '复制'"
       >
@@ -46,10 +47,41 @@ const renderedContent = computed(() => {
 })
 
 function copyMessage() {
-  navigator.clipboard.writeText(props.message.content).then(() => {
+  const text = props.message.content
+  if (!text) {
+    console.warn('Empty message content')
+    return
+  }
+
+  // 优先使用 Clipboard API
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(() => {
+      copied.value = true
+      setTimeout(() => { copied.value = false }, 1000)
+    }).catch((err) => {
+      console.error('Clipboard API failed:', err)
+      fallbackCopy(text)
+    })
+  } else {
+    fallbackCopy(text)
+  }
+}
+
+function fallbackCopy(text: string) {
+  const textarea = document.createElement('textarea')
+  textarea.value = text
+  textarea.style.position = 'fixed'
+  textarea.style.left = '-9999px'
+  document.body.appendChild(textarea)
+  textarea.select()
+  try {
+    document.execCommand('copy')
     copied.value = true
-    setTimeout(() => { copied.value = false }, 2000)
-  })
+    setTimeout(() => { copied.value = false }, 1000)
+  } catch (err) {
+    console.error('Fallback copy failed:', err)
+  }
+  document.body.removeChild(textarea)
 }
 </script>
 
@@ -98,6 +130,10 @@ function copyMessage() {
 .assistant .action-btn {
   background: #f0f0f0;
   color: #666;
+}
+.assistant .action-btn.copied {
+  background: #4caf50;
+  color: white;
 }
 .assistant .action-btn:hover {
   background: #e0e0e0;
