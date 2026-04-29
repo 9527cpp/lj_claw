@@ -1,10 +1,5 @@
 <template>
   <div class="settings-view">
-    <nav class="nav">
-      <router-link to="/settings" class="nav-link active">Settings</router-link>
-      <router-link to="/chat" class="nav-link">Chat</router-link>
-    </nav>
-
     <main class="content">
       <section class="models-section">
         <h2>模型配置</h2>
@@ -111,20 +106,6 @@ async function handleSkillToggle(id: string, enabled: boolean) {
 
 <style scoped>
 .settings-view { min-height: 100vh; }
-.nav {
-  background: white;
-  padding: 0 24px;
-  display: flex;
-  gap: 24px;
-  border-bottom: 1px solid #e0e0e0;
-}
-.nav-link {
-  padding: 16px 0;
-  color: #666;
-  text-decoration: none;
-  border-bottom: 2px solid transparent;
-}
-.nav-link.active { color: #2196F3; border-bottom-color: #2196F3; }
 .content { padding: 24px; max-width: 800px; margin: 0 auto; }
 section { margin-bottom: 32px; }
 h2 { margin-bottom: 16px; }

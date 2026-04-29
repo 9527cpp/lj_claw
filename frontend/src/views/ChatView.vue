@@ -1,10 +1,5 @@
 <template>
   <div class="chat-view">
-    <nav class="nav">
-      <router-link to="/settings" class="nav-link">Settings</router-link>
-      <router-link to="/chat" class="nav-link active">Chat</router-link>
-    </nav>
-
     <main class="chat-main">
       <div class="messages" ref="messagesEl">
         <div v-if="chatStore.messages.length === 0" class="welcome">
@@ -15,6 +10,7 @@
           v-for="(msg, i) in chatStore.messages"
           :key="i"
           :message="msg"
+          @repeat="handleRepeat"
         />
         <div v-if="chatStore.loading" class="loading-indicator">
           <span>思考中...</span>
@@ -48,8 +44,12 @@ const chatStore = useChatStore()
 const inputMessage = ref('')
 const messagesEl = ref<HTMLElement>()
 
-onMounted(() => {
+onMounted(async () => {
   chatStore.fetchHistory()
+  await nextTick()
+  if (messagesEl.value) {
+    messagesEl.value.scrollTop = messagesEl.value.scrollHeight
+  }
 })
 
 async function handleSend() {
@@ -64,24 +64,18 @@ async function handleSend() {
     messagesEl.value.scrollTop = messagesEl.value.scrollHeight
   }
 }
+
+async function handleRepeat(content: string) {
+  await chatStore.sendMessage(content)
+  await nextTick()
+  if (messagesEl.value) {
+    messagesEl.value.scrollTop = messagesEl.value.scrollHeight
+  }
+}
 </script>
 
 <style scoped>
 .chat-view { display: flex; flex-direction: column; height: 100vh; }
-.nav {
-  background: white;
-  padding: 0 24px;
-  display: flex;
-  gap: 24px;
-  border-bottom: 1px solid #e0e0e0;
-}
-.nav-link {
-  padding: 16px 0;
-  color: #666;
-  text-decoration: none;
-  border-bottom: 2px solid transparent;
-}
-.nav-link.active { color: #2196F3; border-bottom-color: #2196F3; }
 .chat-main {
   flex: 1;
   display: flex;
