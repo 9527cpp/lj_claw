@@ -39,6 +39,7 @@ export const useChatStore = defineStore('chat', () => {
 
       const decoder = new TextDecoder()
       let assistantMessage = ''
+      let assistantStarted = false
 
       while (true) {
         const { done, value } = await reader.read()
@@ -53,17 +54,22 @@ export const useChatStore = defineStore('chat', () => {
               const data = JSON.parse(line.slice(6))
               if (data.type === 'text') {
                 assistantMessage += data.content
-                messages.value = [...messages.value.filter(m => m.role !== 'assistant' || m.content !== ''), { role: 'assistant', content: assistantMessage }]
+                if (!assistantStarted) {
+                  messages.value.push({ role: 'assistant', content: assistantMessage })
+                  assistantStarted = true
+                } else {
+                  // 更新最后一条 assistant 消息
+                  const lastIdx = messages.value.length - 1
+                  if (lastIdx >= 0 && messages.value[lastIdx].role === 'assistant') {
+                    messages.value[lastIdx] = { role: 'assistant', content: assistantMessage }
+                  }
+                }
               } else if (data.type === 'error') {
                 error.value = data.content
               }
             } catch {}
           }
         }
-      }
-
-      if (assistantMessage && !messages.value.find(m => m.role === 'assistant' && m.content === assistantMessage)) {
-        messages.value.push({ role: 'assistant', content: assistantMessage })
       }
     } catch (e: any) {
       error.value = e.message || '发送失败'
