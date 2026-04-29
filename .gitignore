@@ -1,0 +1,10 @@
+.omc/
+.omc/
+.omc/
+frontend/.omc/
+frontend/dist/
+frontend/node_modules/.bin/marked
+frontend/node_modules/.vite/
+frontend/node_modules/@types/marked/
+frontend/node_modules/marked/
+*.pyc
