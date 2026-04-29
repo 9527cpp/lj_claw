@@ -70,13 +70,14 @@ class WeatherService:
 
         return None
 
-    async def get_weather(self, location: str, api_key: str, api_host: str = "devapi.qweather.com") -> Dict[str, Any]:
+    async def get_weather(self, location: str, api_key: str, api_host: str = "devapi.qweather.com", is_tomorrow: bool = False) -> Dict[str, Any]:
         """
-        Get current weather from QWeather API.
+        Get weather from QWeather API.
         Args:
             location: City name (e.g., "上海" or "shanghai")
             api_key: QWeather API key
-            api_host: QWeather API host (default: devapi.qweather.com)
+            api_host: QWeather API host
+            is_tomorrow: If True, get tomorrow's forecast instead of current weather
         Returns:
             Weather data dict
         """
@@ -85,11 +86,19 @@ class WeatherService:
         if not location_id:
             return {"success": False, "error": f"未知城市: {location}"}
 
-        url = f"https://{api_host}/v7/weather/now"
-        params = {
-            "location": location_id,
-            "key": api_key
-        }
+        if is_tomorrow:
+            # Use 3-day forecast API for tomorrow
+            url = f"https://{api_host}/v7/weather/3d"
+            params = {
+                "location": location_id,
+                "key": api_key
+            }
+        else:
+            url = f"https://{api_host}/v7/weather/now"
+            params = {
+                "location": location_id,
+                "key": api_key
+            }
 
         try:
             resp = await self.client.get(url, params=params)
@@ -99,17 +108,32 @@ class WeatherService:
             if data.get("code") != "200":
                 return {"success": False, "error": f"API error: {data.get('code')}"}
 
-            now = data.get("now", {})
-            return {
-                "success": True,
-                "location": data.get("location", {}).get("name", location),
-                "temp": now.get("temp", "N/A"),
-                "feels_like": now.get("feelsLike", "N/A"),
-                "condition": now.get("text", "Unknown"),
-                "wind": now.get("windDir", "Unknown"),
-                "humidity": now.get("humidity", "N/A"),
-                "vis": now.get("vis", "N/A"),
-            }
+            if is_tomorrow:
+                # Get tomorrow's weather from 3-day forecast
+                daily_list = data.get("daily", [])
+                if len(daily_list) >= 2:
+                    tomorrow = daily_list[1]  # Index 1 is tomorrow
+                    return {
+                        "success": True,
+                        "location": data.get("location", {}).get("name", location),
+                        "temp": tomorrow.get("tempMin", "N/A") + "~" + tomorrow.get("tempMax", "N/A") + "°C",
+                        "condition": tomorrow.get("textDay", tomorrow.get("textNight", "Unknown")),
+                        "wind": tomorrow.get("windDirDay", tomorrow.get("windDirNight", "Unknown")),
+                        "humidity": tomorrow.get("humidity", "N/A"),
+                    }
+                return {"success": False, "error": "无法获取天气预报"}
+            else:
+                now = data.get("now", {})
+                return {
+                    "success": True,
+                    "location": data.get("location", {}).get("name", location),
+                    "temp": now.get("temp", "N/A"),
+                    "feels_like": now.get("feelsLike", "N/A"),
+                    "condition": now.get("text", "Unknown"),
+                    "wind": now.get("windDir", "Unknown"),
+                    "humidity": now.get("humidity", "N/A"),
+                    "vis": now.get("vis", "N/A"),
+                }
         except Exception as e:
             return {"success": False, "error": str(e)}
 

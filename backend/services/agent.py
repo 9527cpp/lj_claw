@@ -26,14 +26,14 @@ class AgentService:
         weather_info = None
 
         if weather_skill:
-            location = self._extract_location(message)
+            location, is_tomorrow = self._extract_location_and_tomorrow(message)
             if location:
                 weather_config = weather_skill.get("config", {})
                 weather_api_key = weather_config.get("api_key")
                 weather_api_host = weather_config.get("api_host", "devapi.qweather.com")
                 if weather_api_key:
                     yield {"type": "thinking", "content": "正在查询天气..."}
-                    weather_info = await self.weather_service.get_weather(location, weather_api_key, weather_api_host)
+                    weather_info = await self.weather_service.get_weather(location, weather_api_key, weather_api_host, is_tomorrow)
                 else:
                     weather_info = {"success": False, "error": "未配置天气API密钥"}
 
@@ -61,7 +61,14 @@ class AgentService:
 
     def _extract_location(self, message: str) -> str | None:
         """Extract location from user message."""
-        # Pattern for Chinese: "上海天气", "北京天气怎么样"
+        location, _ = self._extract_location_and_tomorrow(message)
+        return location
+
+    def _extract_location_and_tomorrow(self, message: str) -> tuple[str | None, bool]:
+        """Extract location and whether asking for tomorrow from user message."""
+        is_tomorrow = "明天" in message or "tomorrow" in message.lower()
+
+        # Pattern for Chinese: "上海天气", "北京天气怎么样", "上海明天天气"
         patterns = [
             r'([一-龥]+)天气',
             r'天气\s*([一-龥]+)',
@@ -70,14 +77,14 @@ class AgentService:
         for pattern in patterns:
             match = re.search(pattern, message)
             if match:
-                return match.group(1)
+                return match.group(1), is_tomorrow
 
-        # Pattern for English: "weather in Shanghai"
-        match = re.search(r'weather\s+(?:in|at)\s+(\w+)', message, re.IGNORECASE)
+        # Pattern for English: "weather in Shanghai", "Shanghai weather tomorrow"
+        match = re.search(r'weather\s+(?:in|at)?\s*(\w+)', message, re.IGNORECASE)
         if match:
-            return match.group(1)
+            return match.group(1), is_tomorrow
 
-        return None
+        return None, False
 
     def _format_weather(self, weather: Dict[str, Any]) -> str:
         """Format weather data into readable text."""
