@@ -16,6 +16,7 @@
       <button
         v-if="message.role === 'assistant'"
         class="action-btn copy-btn"
+        :class="{ copied }"
         @click="copyMessage"
         :title="copied ? '已复制' : '复制'"
       >
@@ -48,7 +49,7 @@ const renderedContent = computed(() => {
 function copyMessage() {
   navigator.clipboard.writeText(props.message.content).then(() => {
     copied.value = true
-    setTimeout(() => { copied.value = false }, 2000)
+    setTimeout(() => { copied.value = false }, 1000)
   })
 }
 </script>
@@ -98,6 +99,10 @@ function copyMessage() {
 .assistant .action-btn {
   background: #f0f0f0;
   color: #666;
+}
+.assistant .action-btn.copied {
+  background: #4caf50;
+  color: white;
 }
 .assistant .action-btn:hover {
   background: #e0e0e0;
