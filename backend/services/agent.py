@@ -16,6 +16,7 @@ class AgentService:
         provider = model_config.get("provider", "openai")
         api_base = model_config.get("api_base")
         api_key = model_config.get("api_key")
+        max_tokens = model_config.get("max_tokens", 4096)
 
         if provider == "openai":
             yield {"type": "thinking", "content": "正在思考..."}
@@ -23,7 +24,7 @@ class AgentService:
                 yield chunk
         elif provider == "anthropic":
             yield {"type": "thinking", "content": "正在思考..."}
-            async for chunk in self._anthropic_chat(message, api_base, api_key, history):
+            async for chunk in self._anthropic_chat(message, api_base, api_key, history, max_tokens):
                 yield chunk
         else:
             yield {"type": "error", "content": f"Unsupported provider: {provider}"}
@@ -65,7 +66,8 @@ class AgentService:
         message: str,
         api_base: str,
         api_key: str,
-        history: List[Dict[str, str]]
+        history: List[Dict[str, str]],
+        max_tokens: int = 4096
     ) -> AsyncGenerator[Dict[str, Any], None]:
         import json as json_module
         url = f"{api_base.rstrip('/')}/v1/messages"
@@ -73,7 +75,7 @@ class AgentService:
         payload = {
             "model": "claude-3-5-sonnet-20241022",
             "messages": history + [{"role": "user", "content": message}],
-            "max_tokens": 4096,
+            "max_tokens": max_tokens,
             "stream": True
         }
 
