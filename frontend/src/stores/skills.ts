@@ -29,5 +29,12 @@ export const useSkillsStore = defineStore('skills', () => {
     if (skill) skill.enabled = enabled
   }
 
-  return { skills, loading, fetchSkills, toggleSkill }
+  async function updateSkill(id: string, config: Record<string, any>) {
+    const skill = skills.value.find(s => s.id === id)
+    if (!skill) return
+    await skillsApi.update(id, { ...skill, config })
+    skill.config = config
+  }
+
+  return { skills, loading, fetchSkills, toggleSkill, updateSkill }
 })

@@ -1,0 +1,131 @@
+import httpx
+import csv
+import io
+from typing import Dict, Any, Optional
+
+CITY_LIST_URL = "https://raw.githubusercontent.com/qwd/LocationList/master/China-City-List-latest.csv"
+
+class WeatherService:
+    def __init__(self):
+        self.client = httpx.AsyncClient(timeout=30.0)
+        self._city_cache: Dict[str, str] = {}  # name -> location_id
+
+    async def _load_city_list(self) -> Dict[str, str]:
+        """Load city list from QWeather LocationList repository."""
+        if self._city_cache:
+            return self._city_cache
+
+        try:
+            resp = await self.client.get(CITY_LIST_URL)
+            resp.raise_for_status()
+
+            lines = resp.text.split('\n')
+            reader = csv.reader(lines)
+            next(reader, None)  # skip header row
+            next(reader, None)  # skip version row
+
+            for row in reader:
+                if len(row) >= 3:
+                    location_id = row[0]
+                    name_en = row[1].lower()
+                    name_zh = row[2]
+                    self._city_cache[name_en] = location_id
+                    self._city_cache[name_zh] = location_id
+        except Exception as e:
+            print(f"Failed to load city list: {e}")
+
+        return self._city_cache
+
+    async def get_location_id(self, city_name: str) -> Optional[str]:
+        """Convert city name to QWeather location ID."""
+        cache = await self._load_city_list()
+
+        # Direct lookup (case-insensitive for English)
+        name_lower = city_name.lower()
+        if name_lower in cache:
+            return cache[name_lower]
+
+        # Try partial match for Chinese
+        for name, loc_id in cache.items():
+            if city_name in name or name in city_name:
+                return loc_id
+
+        return None
+
+    async def get_weather(self, location: str, api_key: str, api_host: str = "devapi.qweather.com") -> Dict[str, Any]:
+        """
+        Get current weather from QWeather API.
+        Args:
+            location: City name (e.g., "上海" or "shanghai")
+            api_key: QWeather API key
+            api_host: QWeather API host (default: devapi.qweather.com)
+        Returns:
+            Weather data dict
+        """
+        # Convert city name to location ID
+        location_id = await self.get_location_id(location)
+        if not location_id:
+            return {"success": False, "error": f"未知城市: {location}"}
+
+        url = f"https://{api_host}/v7/weather/now"
+        params = {
+            "location": location_id,
+            "key": api_key
+        }
+
+        try:
+            resp = await self.client.get(url, params=params)
+            resp.raise_for_status()
+            data = resp.json()
+
+            if data.get("code") != "200":
+                return {"success": False, "error": f"API error: {data.get('code')}"}
+
+            now = data.get("now", {})
+            return {
+                "success": True,
+                "location": data.get("location", {}).get("name", location),
+                "temp": now.get("temp", "N/A"),
+                "feels_like": now.get("feelsLike", "N/A"),
+                "condition": now.get("text", "Unknown"),
+                "wind": now.get("windDir", "Unknown"),
+                "humidity": now.get("humidity", "N/A"),
+                "vis": now.get("vis", "N/A"),
+            }
+        except Exception as e:
+            return {"success": False, "error": str(e)}
+
+    async def get_weather_by_coord(self, lat: float, lon: float, api_key: str, api_host: str = "devapi.qweather.com") -> Dict[str, Any]:
+        """
+        Get current weather by coordinates.
+        """
+        url = f"https://{api_host}/v7/weather/now"
+        params = {
+            "location": f"{lon},{lat}",
+            "key": api_key
+        }
+
+        try:
+            resp = await self.client.get(url, params=params)
+            resp.raise_for_status()
+            data = resp.json()
+
+            if data.get("code") != "200":
+                return {"success": False, "error": f"API error: {data.get('code')}"}
+
+            now = data.get("now", {})
+            return {
+                "success": True,
+                "location": data.get("location", {}).get("name", "Unknown"),
+                "temp": now.get("temp", "N/A"),
+                "feels_like": now.get("feelsLike", "N/A"),
+                "condition": now.get("text", "Unknown"),
+                "wind": now.get("windDir", "Unknown"),
+                "humidity": now.get("humidity", "N/A"),
+                "vis": now.get("vis", "N/A"),
+            }
+        except Exception as e:
+            return {"success": False, "error": str(e)}
+
+    async def close(self):
+        await self.client.aclose()
