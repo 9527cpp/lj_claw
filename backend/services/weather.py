@@ -70,14 +70,14 @@ class WeatherService:
 
         return None
 
-    async def get_weather(self, location: str, api_key: str, api_host: str = "devapi.qweather.com", is_tomorrow: bool = False) -> Dict[str, Any]:
+    async def get_weather(self, location: str, api_key: str, api_host: str = "devapi.qweather.com", day_offset: int = 0) -> Dict[str, Any]:
         """
         Get weather from QWeather API.
         Args:
             location: City name (e.g., "上海" or "shanghai")
             api_key: QWeather API key
             api_host: QWeather API host
-            is_tomorrow: If True, get tomorrow's forecast instead of current weather
+            day_offset: 0=today (now API), 1=tomorrow, 2=day after tomorrow (3d API)
         Returns:
             Weather data dict
         """
@@ -86,19 +86,13 @@ class WeatherService:
         if not location_id:
             return {"success": False, "error": f"未知城市: {location}"}
 
-        if is_tomorrow:
-            # Use 3-day forecast API for tomorrow
-            url = f"https://{api_host}/v7/weather/3d"
-            params = {
-                "location": location_id,
-                "key": api_key
-            }
-        else:
+        if day_offset == 0:
             url = f"https://{api_host}/v7/weather/now"
-            params = {
-                "location": location_id,
-                "key": api_key
-            }
+            params = {"location": location_id, "key": api_key}
+        else:
+            # Use 3-day forecast API for tomorrow or day after
+            url = f"https://{api_host}/v7/weather/3d"
+            params = {"location": location_id, "key": api_key}
 
         try:
             resp = await self.client.get(url, params=params)
@@ -108,18 +102,18 @@ class WeatherService:
             if data.get("code") != "200":
                 return {"success": False, "error": f"API error: {data.get('code')}"}
 
-            if is_tomorrow:
-                # Get tomorrow's weather from 3-day forecast
+            if day_offset > 0:
+                # Get forecast from 3-day API
                 daily_list = data.get("daily", [])
-                if len(daily_list) >= 2:
-                    tomorrow = daily_list[1]  # Index 1 is tomorrow
+                if len(daily_list) > day_offset:
+                    target_day = daily_list[day_offset]
                     return {
                         "success": True,
                         "location": data.get("location", {}).get("name", location),
-                        "temp": tomorrow.get("tempMin", "N/A") + "~" + tomorrow.get("tempMax", "N/A") + "°C",
-                        "condition": tomorrow.get("textDay", tomorrow.get("textNight", "Unknown")),
-                        "wind": tomorrow.get("windDirDay", tomorrow.get("windDirNight", "Unknown")),
-                        "humidity": tomorrow.get("humidity", "N/A"),
+                        "temp": target_day.get("tempMin", "N/A") + "~" + target_day.get("tempMax", "N/A") + "°C",
+                        "condition": target_day.get("textDay", target_day.get("textNight", "Unknown")),
+                        "wind": target_day.get("windDirDay", target_day.get("windDirNight", "Unknown")),
+                        "humidity": target_day.get("humidity", "N/A"),
                     }
                 return {"success": False, "error": "无法获取天气预报"}
             else:
@@ -138,14 +132,9 @@ class WeatherService:
             return {"success": False, "error": str(e)}
 
     async def get_weather_by_coord(self, lat: float, lon: float, api_key: str, api_host: str = "devapi.qweather.com") -> Dict[str, Any]:
-        """
-        Get current weather by coordinates.
-        """
+        """Get current weather by coordinates."""
         url = f"https://{api_host}/v7/weather/now"
-        params = {
-            "location": f"{lon},{lat}",
-            "key": api_key
-        }
+        params = {"location": f"{lon},{lat}", "key": api_key}
 
         try:
             resp = await self.client.get(url, params=params)

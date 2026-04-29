@@ -26,14 +26,14 @@ class AgentService:
         weather_info = None
 
         if weather_skill:
-            location, is_tomorrow = self._extract_location_and_tomorrow(message)
+            location, day_offset = self._extract_location_and_day(message)
             if location:
                 weather_config = weather_skill.get("config", {})
                 weather_api_key = weather_config.get("api_key")
                 weather_api_host = weather_config.get("api_host", "devapi.qweather.com")
                 if weather_api_key:
                     yield {"type": "thinking", "content": "正在查询天气..."}
-                    weather_info = await self.weather_service.get_weather(location, weather_api_key, weather_api_host, is_tomorrow)
+                    weather_info = await self.weather_service.get_weather(location, weather_api_key, weather_api_host, day_offset)
                 else:
                     weather_info = {"success": False, "error": "未配置天气API密钥"}
 
@@ -61,12 +61,16 @@ class AgentService:
 
     def _extract_location(self, message: str) -> str | None:
         """Extract location from user message."""
-        location, _ = self._extract_location_and_tomorrow(message)
+        location, _ = self._extract_location_and_day(message)
         return location
 
-    def _extract_location_and_tomorrow(self, message: str) -> tuple[str | None, bool]:
-        """Extract location and whether asking for tomorrow from user message."""
-        is_tomorrow = "明天" in message or "tomorrow" in message.lower()
+    def _extract_location_and_day(self, message: str) -> tuple[str | None, int]:
+        """Extract location and day offset (0=today, 1=tomorrow, 2=day after tomorrow)."""
+        day_offset = 0
+        if "明天" in message or "tomorrow" in message.lower():
+            day_offset = 1
+        if "后天" in message:
+            day_offset = 2
 
         # Pattern for Chinese: "上海天气", "北京天气怎么样", "上海明天天气"
         patterns = [
@@ -77,14 +81,14 @@ class AgentService:
         for pattern in patterns:
             match = re.search(pattern, message)
             if match:
-                return match.group(1), is_tomorrow
+                return match.group(1), day_offset
 
         # Pattern for English: "weather in Shanghai", "Shanghai weather tomorrow"
         match = re.search(r'weather\s+(?:in|at)?\s*(\w+)', message, re.IGNORECASE)
         if match:
-            return match.group(1), is_tomorrow
+            return match.group(1), day_offset
 
-        return None, False
+        return None, 0
 
     def _format_weather(self, weather: Dict[str, Any]) -> str:
         """Format weather data into readable text."""
