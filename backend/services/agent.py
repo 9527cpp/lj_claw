@@ -73,7 +73,7 @@ class AgentService:
         payload = {
             "model": "claude-3-5-sonnet-20241022",
             "messages": history + [{"role": "user", "content": message}],
-            "max_tokens": 1024,
+            "max_tokens": 4096,
             "stream": True
         }
 
