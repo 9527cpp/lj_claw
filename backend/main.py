@@ -1,8 +1,14 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from routers import models_router, skills_router, chat_router
+from services.weather import WeatherService, CITY_LIST_FILE
 
 app = FastAPI(title="lj_claw Agent", redirect_slashes=False)
+
+# Download city list on startup if not exists
+weather_service = WeatherService()
+if not CITY_LIST_FILE.exists():
+    weather_service.download_city_list()
 
 app.add_middleware(
     CORSMiddleware,

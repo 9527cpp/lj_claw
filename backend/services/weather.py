@@ -1,25 +1,43 @@
 import httpx
 import csv
-import io
+import urllib.request
+from pathlib import Path
 from typing import Dict, Any, Optional
 
 CITY_LIST_URL = "https://raw.githubusercontent.com/qwd/LocationList/master/China-City-List-latest.csv"
+CITY_LIST_FILE = Path(__file__).parent.parent / "data" / "city_list.csv"
 
 class WeatherService:
     def __init__(self):
         self.client = httpx.AsyncClient(timeout=30.0)
         self._city_cache: Dict[str, str] = {}  # name -> location_id
 
-    async def _load_city_list(self) -> Dict[str, str]:
-        """Load city list from QWeather LocationList repository."""
+    def download_city_list(self) -> bool:
+        """Download city list from GitHub and save to local file."""
+        try:
+            with urllib.request.urlopen(CITY_LIST_URL) as response:
+                content = response.read().decode('utf-8')
+            CITY_LIST_FILE.parent.mkdir(parents=True, exist_ok=True)
+            with open(CITY_LIST_FILE, "w", encoding="utf-8") as f:
+                f.write(content)
+            return True
+        except Exception as e:
+            print(f"Failed to download city list: {e}")
+            return False
+
+    def _load_city_list(self) -> Dict[str, str]:
+        """Load city list from local CSV file."""
         if self._city_cache:
             return self._city_cache
 
-        try:
-            resp = await self.client.get(CITY_LIST_URL)
-            resp.raise_for_status()
+        if not CITY_LIST_FILE.exists():
+            print(f"City list not found at {CITY_LIST_FILE}, please run download first")
+            return self._city_cache
 
-            lines = resp.text.split('\n')
+        try:
+            with open(CITY_LIST_FILE, "r", encoding="utf-8") as f:
+                lines = f.readlines()
+
             reader = csv.reader(lines)
             next(reader, None)  # skip header row
             next(reader, None)  # skip version row
@@ -36,9 +54,9 @@ class WeatherService:
 
         return self._city_cache
 
-    async def get_location_id(self, city_name: str) -> Optional[str]:
+    def get_location_id(self, city_name: str) -> Optional[str]:
         """Convert city name to QWeather location ID."""
-        cache = await self._load_city_list()
+        cache = self._load_city_list()
 
         # Direct lookup (case-insensitive for English)
         name_lower = city_name.lower()
@@ -63,7 +81,7 @@ class WeatherService:
             Weather data dict
         """
         # Convert city name to location ID
-        location_id = await self.get_location_id(location)
+        location_id = self.get_location_id(location)
         if not location_id:
             return {"success": False, "error": f"未知城市: {location}"}
 
