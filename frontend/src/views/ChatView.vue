@@ -12,6 +12,7 @@
           :message="msg"
           @repeat="handleRepeat"
         />
+        <div ref="bottomEl"></div>
         <div v-if="chatStore.loading" class="loading-indicator">
           <span>思考中...</span>
         </div>
@@ -36,20 +37,31 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, nextTick } from 'vue'
+import { ref, onMounted, nextTick, watch } from 'vue'
 import { useChatStore } from '@/stores/chat'
 import ChatMessage from '@/components/ChatMessage.vue'
 
 const chatStore = useChatStore()
 const inputMessage = ref('')
 const messagesEl = ref<HTMLElement>()
+const bottomEl = ref<HTMLElement>()
+
+function scrollToBottom() {
+  if (bottomEl.value) {
+    bottomEl.value.scrollIntoView({ behavior: 'smooth' })
+  }
+}
 
 onMounted(async () => {
-  chatStore.fetchHistory()
+  await chatStore.fetchHistory()
   await nextTick()
-  if (messagesEl.value) {
-    messagesEl.value.scrollTop = messagesEl.value.scrollHeight
-  }
+  scrollToBottom()
+})
+
+// Watch for messages changes to scroll to bottom
+watch(() => chatStore.messages.length, async () => {
+  await nextTick()
+  scrollToBottom()
 })
 
 async function handleSend() {
