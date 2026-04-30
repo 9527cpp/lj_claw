@@ -7,8 +7,8 @@ const api = axios.create({
 export const modelsApi = {
   list: () => api.get('/models/'),
   create: (data: any) => api.post('/models/', data),
-  update: (id: string, data: any) => api.put(`/models/${id}/`, data),
-  delete: (id: string) => api.delete(`/models/${id}/`),
+  update: (id: string, data: any) => api.put(`/models/${id}`, data),
+  delete: (id: string) => api.delete(`/models/${id}`),
   setActive: (id: string) => api.put(`/models/${id}/active`)
 }
 

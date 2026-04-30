@@ -34,13 +34,23 @@ export const useModelsStore = defineStore('models', () => {
   }
 
   async function updateModel(id: string, model: ModelConfig) {
-    await modelsApi.update(id, model)
-    await fetchModels()
+    try {
+      await modelsApi.update(id, model)
+      await fetchModels()
+    } catch (error) {
+      console.error('Failed to update model:', error)
+      throw new Error('Failed to update model')
+    }
   }
 
   async function deleteModel(id: string) {
-    await modelsApi.delete(id)
-    await fetchModels()
+    try {
+      await modelsApi.delete(id)
+      await fetchModels()
+    } catch (error) {
+      console.error('Failed to delete model:', error)
+      throw new Error('Failed to delete model')
+    }
   }
 
   async function setActive(id: string) {

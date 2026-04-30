@@ -1,7 +1,7 @@
 import httpx
 import json
 import re
-from typing import AsyncGenerator, List, Dict, Any
+from typing import AsyncGenerator, List, Dict, Any, Optional, Tuple
 from services.weather import WeatherService
 
 class AgentService:
@@ -59,12 +59,12 @@ class AgentService:
 
         yield {"type": "done"}
 
-    def _extract_location(self, message: str) -> str | None:
+    def _extract_location(self, message: str) -> Optional[str]:
         """Extract location from user message."""
         location, _ = self._extract_location_and_day(message)
         return location
 
-    def _extract_location_and_day(self, message: str) -> tuple[str | None, int]:
+    def _extract_location_and_day(self, message: str) -> Tuple[Optional[str], int]:
         """Extract location and day offset (0=today, 1=tomorrow, 2=day after tomorrow)."""
         day_offset = 0
         if "明天" in message or "tomorrow" in message.lower():

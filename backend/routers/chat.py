@@ -1,6 +1,7 @@
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
+from typing import Optional
 from config import load_json, save_json
 from services.agent import AgentService
 import json
@@ -10,7 +11,7 @@ agent_service = AgentService()
 
 class ChatRequest(BaseModel):
     message: str
-    model_id: str | None = None
+    model_id: Optional[str] = None
 
 @router.get("/history")
 def get_history():
