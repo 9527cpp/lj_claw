@@ -11,33 +11,42 @@ class SkillLoader:
 
     def __init__(self):
         self.skills_dir = SKILLS_DIR
+        self._path_cache: dict[str, Path] = {}
+        self._md_cache: dict[str, str] = {}
 
-    def _is_valid_skill(self, path: Path) -> bool:
-        """Check if directory is a valid skill (has SKILL.md)."""
-        return path.is_dir() and (path / "SKILL.md").exists()
+    def _ensure_cache(self):
+        """Build path cache by scanning skills directory once."""
+        if self._path_cache:
+            return
+        if not self.skills_dir.exists():
+            return
+        for item in self.skills_dir.iterdir():
+            if item.is_dir():
+                skill_id = item.name.lower().replace("-", "_")
+                self._path_cache[skill_id] = item
 
     def get_skill_path(self, skill_id: str) -> Optional[Path]:
         """Get the filesystem path for a skill by its ID."""
-        # Skill IDs use underscores, directories use hyphens/underscores
-        # Try exact match first
-        skill_path = self.skills_dir / skill_id
-        if skill_path.exists():
-            return skill_path
+        self._ensure_cache()
 
-        # Try replacing underscores with hyphens
-        skill_path = self.skills_dir / skill_id.replace("_", "-")
-        if skill_path.exists():
-            return skill_path
+        # Try exact match first (with underscores)
+        if skill_id in self._path_cache:
+            return self._path_cache[skill_id]
 
-        # Scan directory for match (case insensitive)
-        for item in self.skills_dir.iterdir():
-            if item.is_dir() and item.name.lower().replace("-", "_") == skill_id.lower():
-                return item
+        # Try with hyphens
+        hyphen_id = skill_id.replace("_", "-")
+        for cached_id, path in self._path_cache.items():
+            if cached_id.replace("_", "-") == hyphen_id:
+                return path
 
         return None
 
     def load_skill_md(self, skill_id: str) -> Optional[str]:
         """Load SKILL.md content for a skill."""
+        # Check memory cache first
+        if skill_id in self._md_cache:
+            return self._md_cache[skill_id]
+
         skill_path = self.get_skill_path(skill_id)
         if not skill_path:
             return None
@@ -46,7 +55,9 @@ class SkillLoader:
         if not skill_md.exists():
             return None
 
-        return skill_md.read_text(encoding="utf-8")
+        content = skill_md.read_text(encoding="utf-8")
+        self._md_cache[skill_id] = content
+        return content
 
     def build_skill_context(self, skills: List[Dict[str, Any]]) -> str:
         """

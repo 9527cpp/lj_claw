@@ -62,7 +62,7 @@ class SkillImportService:
         data.setdefault("skills", []).append({
             "id": skill_id,
             "name": display_name,
-            "enabled": True,  # 默认启用
+            "enabled": False,  # 默认不启用，由用户手动选择
             "config": {}
         })
         save_json("skills.json", data)

@@ -181,15 +181,21 @@ class AgentService:
 
         async with self.client.stream("POST", url, headers=headers, json=payload) as resp:
             async for line in resp.aiter_lines():
+                if line.startswith("event: "):
+                    continue
                 if line.startswith("data: "):
                     data = line[6:]
                     if data == "[DONE]":
                         break
                     try:
                         chunk = json_module.loads(data)
-                        content = chunk.get("delta", {}).get("text", "")
-                        if content:
-                            yield {"type": "text", "content": content}
+                        # MiniMax Anthropic 兼容格式
+                        delta = chunk.get("delta", {})
+                        delta_type = delta.get("type", "")
+                        if delta_type == "text_delta":
+                            content = delta.get("text", "")
+                            if content:
+                                yield {"type": "text", "content": content}
                     except json_module.JSONDecodeError:
                         pass
 
