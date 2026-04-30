@@ -23,6 +23,15 @@
 
       <section class="skills-section">
         <h2>Skills 管理</h2>
+        <div class="skill-import">
+          <input v-model="skillImportSource" placeholder="输入 URL 或本地路径导入 Skill" />
+          <button @click="handleImportSkill" :disabled="importing">
+            {{ importing ? '导入中...' : '导入' }}
+          </button>
+          <span v-if="importResult" :class="{ success: importResult.success, error: !importResult.success }">
+            {{ importResult.success ? '导入成功' : importResult.error }}
+          </span>
+        </div>
         <div v-if="skillsLoading" class="loading">加载中...</div>
         <div v-else class="skills-list">
           <SkillToggle
@@ -59,6 +68,9 @@ const loading = ref(false)
 const skillsLoading = ref(false)
 const showAddForm = ref(false)
 const editingModel = ref<ModelConfig | undefined>()
+const skillImportSource = ref('')
+const importing = ref(false)
+const importResult = ref<{ success: boolean; error?: string } | null>(null)
 
 onMounted(async () => {
   loading.value = true
@@ -102,6 +114,21 @@ async function handleActivate(id: string) {
 async function handleSkillToggle(id: string, enabled: boolean) {
   await skillsStore.toggleSkill(id, enabled)
 }
+
+async function handleImportSkill() {
+  if (!skillImportSource.value.trim()) return
+  importing.value = true
+  importResult.value = null
+  try {
+    const res = await skillsStore.importSkill(skillImportSource.value)
+    importResult.value = { success: true }
+    skillImportSource.value = ''
+  } catch (e: any) {
+    importResult.value = { success: false, error: e?.response?.data?.detail || '导入失败' }
+  } finally {
+    importing.value = false
+  }
+}
 </script>
 
 <style scoped>
@@ -120,4 +147,30 @@ h2 { margin-bottom: 16px; }
   border-radius: 4px;
   cursor: pointer;
 }
+.skill-import {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+  align-items: center;
+}
+.skill-import input {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+.skill-import button {
+  padding: 8px 16px;
+  background: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.skill-import button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+.skill-import .success { color: #4CAF50; }
+.skill-import .error { color: #f44336; }
 </style>

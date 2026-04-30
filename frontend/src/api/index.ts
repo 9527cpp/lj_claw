@@ -14,6 +14,8 @@ export const modelsApi = {
 
 export const skillsApi = {
   list: () => api.get('/skills/'),
+  import: (source: string) => api.post('/skills/import', { source }),
+  listImported: () => api.get('/skills/imported'),
   update: (id: string, data: any) => api.put(`/skills/${id}`, data),
   toggle: (id: string, enabled: boolean) => api.put(`/skills/${id}/enabled?enabled=${enabled}`)
 }

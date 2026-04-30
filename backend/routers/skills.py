@@ -1,8 +1,10 @@
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 from config import load_json, save_json
+from services.import_skill import SkillImportService
 
 router = APIRouter()
+import_service = SkillImportService()
 
 class SkillConfig(BaseModel):
     id: str
@@ -10,10 +12,26 @@ class SkillConfig(BaseModel):
     enabled: bool = True
     config: dict = {}
 
+class ImportRequest(BaseModel):
+    source: str  # URL or local absolute path
+
 @router.get("/")
 def list_skills():
     data = load_json("skills.json")
     return data
+
+@router.post("/import")
+async def import_skill(request: ImportRequest):
+    """Import a skill from URL (cloud) or local path (symlink or copy)."""
+    result = import_service.import_skill(request.source)
+    if not result.get("success"):
+        raise HTTPException(status_code=400, detail=result.get("error", "Import failed"))
+    return result
+
+@router.get("/imported")
+def list_imported_skills():
+    """List all locally imported/skilled skills."""
+    return {"skills": import_service.list_imported_skills()}
 
 @router.put("/{skill_id}")
 def update_skill(skill_id: str, skill: SkillConfig):

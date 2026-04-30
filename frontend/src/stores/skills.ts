@@ -36,5 +36,11 @@ export const useSkillsStore = defineStore('skills', () => {
     skill.config = config
   }
 
-  return { skills, loading, fetchSkills, toggleSkill, updateSkill }
+  async function importSkill(source: string) {
+    const res = await skillsApi.import(source)
+    await fetchSkills()  // Refresh list
+    return res.data
+  }
+
+  return { skills, loading, fetchSkills, toggleSkill, updateSkill, importSkill }
 })
