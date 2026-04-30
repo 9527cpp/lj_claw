@@ -41,14 +41,22 @@
               <div class="source-info">
                 <span class="source-type">{{ getTypeLabel(src.type) }}</span>
                 <span class="source-path" :title="src.source">{{ truncatePath(src.source) }}</span>
+                <span class="source-count">{{ src.skills.length }} 个 skills</span>
               </div>
               <button class="unimport-btn" @click="handleUnimport(src.source)">
                 取消导入
               </button>
             </div>
+            <div class="source-search">
+              <input
+                v-model="searchTerms[src.source]"
+                :placeholder="'搜索 ' + src.skills.length + ' 个 skills...'"
+                class="search-input"
+              />
+            </div>
             <div class="source-skills">
               <span
-                v-for="skill in src.skills"
+                v-for="skill in filteredImportedSkills(src)"
                 :key="skill.id"
                 class="skill-tag"
                 :class="{ enabled: isSkillEnabled(skill.id) }"
@@ -56,6 +64,9 @@
                 :title="isSkillEnabled(skill.id) ? '点击禁用' : '点击启用'"
               >
                 {{ skill.name }}
+              </span>
+              <span v-if="filteredImportedSkills(src).length === 0 && searchTerms[src.source]" class="no-results">
+                无匹配结果
               </span>
             </div>
           </div>
@@ -90,6 +101,7 @@ import ModelCard from '@/components/ModelCard.vue'
 import ModelForm from '@/components/ModelForm.vue'
 import SkillToggle from '@/components/SkillToggle.vue'
 import type { ModelConfig } from '@/stores/models'
+import type { ImportSource } from '@/stores/skills'
 
 const modelsStore = useModelsStore()
 const skillsStore = useSkillsStore()
@@ -185,6 +197,16 @@ async function handleUnimport(source: string) {
     alert('取消导入失败: ' + (e?.message || '未知错误'))
   }
 }
+
+const searchTerms = ref<Record<string, string>>({})
+
+const filteredImportedSkills = computed(() => {
+  return (src: ImportSource) => {
+    const term = (searchTerms.value[src.source] || '').toLowerCase()
+    if (!term) return src.skills
+    return src.skills.filter((s: { name: string }) => s.name.toLowerCase().includes(term))
+  }
+})
 
 function isSkillEnabled(skillId: string): boolean {
   const skill = skillsStore.skills.find(s => s.id === skillId)
@@ -342,6 +364,38 @@ h2 { margin-bottom: 16px; }
 }
 .skill-tag:not(.enabled):hover {
   background: #bdbdbd;
+}
+
+.source-count {
+  background: #e3f2fd;
+  color: #1976D2;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  margin-left: 8px;
+}
+
+.source-search {
+  margin-bottom: 8px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 6px 10px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #2196F3;
+}
+
+.no-results {
+  color: #999;
+  font-size: 12px;
+  padding: 4px;
 }
 
 @media (max-width: 768px) {
