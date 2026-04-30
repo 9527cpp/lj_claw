@@ -3,11 +3,12 @@ import shutil
 import urllib.request
 import zipfile
 import tarfile
-import re
+import json
 from pathlib import Path
 from typing import Optional, List, Dict, Any
 
 SKILLS_DIR = Path(__file__).parent.parent / "skills"
+IMPORTS_FILE = Path(__file__).parent.parent / "data" / "skill_imports.json"
 
 
 class SkillImportService:
@@ -15,47 +16,37 @@ class SkillImportService:
         self.skills_dir = SKILLS_DIR
         self.skills_dir.mkdir(exist_ok=True)
 
-    def is_url(self, source: str) -> bool:
-        return source.startswith(("http://", "https://", "git+"))
+    def _load_imports(self) -> List[Dict[str, Any]]:
+        if not IMPORTS_FILE.exists():
+            return []
+        try:
+            return json.loads(IMPORTS_FILE.read_text(encoding="utf-8"))
+        except Exception:
+            return []
 
-    def is_local_absolute(self, source: str) -> bool:
-        return os.path.isabs(source)
-
-    def is_within_project(self, path: str) -> bool:
-        project_root = Path(__file__).parent.parent.parent.resolve()
-        return Path(path).resolve().is_relative_to(project_root)
-
-    def import_skill(self, source: str) -> dict:
-        """
-        Import skill(s) from source (URL or local path).
-        Returns: { "success": bool, "name": str, "type": str, "path": str, "error": str }
-        If source is a directory containing multiple skills, imports all.
-        """
-        if self.is_url(source):
-            return self._import_from_url(source)
-        elif self.is_local_absolute(source):
-            return self._import_from_local(source)
-        else:
-            return {"success": False, "error": "Invalid source: must be URL or absolute path"}
+    def _save_imports(self, imports: List[Dict[str, Any]]):
+        IMPORTS_FILE.write_text(json.dumps(imports, ensure_ascii=False, indent=2), encoding="utf-8")
 
     def _is_skill_dir(self, path: Path) -> bool:
-        """Check if a directory is a valid skill (has SKILL.md or skill.json)."""
         return (path / "SKILL.md").exists() or (path / "skill.json").exists()
 
-    def _scan_skills_dir(self, source_path: Path) -> List[Path]:
-        """Scan a directory for valid skill subdirectories."""
+    def _scan_skills_in_dir(self, source_path: Path) -> List[Path]:
         skills = []
         for item in source_path.iterdir():
             if item.is_dir() and self._is_skill_dir(item):
                 skills.append(item)
         return skills
 
-    def _register_to_json(self, skill_name: str, skill_path: Path) -> str:
-        """Register imported skill to skills.json. Returns the skill id."""
+    def _generate_skill_id(self, skill_name: str) -> str:
+        import re
+        name = re.sub(r'[^a-zA-Z0-9\-_ ]', '', skill_name)
+        return name.lower().replace("-", "_").replace(" ", "_")
+
+    def _register_skill_to_json(self, skill_name: str, skill_path: Path) -> str:
+        import re
         from config import load_json, save_json
 
-        # Try to read SKILL.md for id and name
-        skill_id = skill_name.lower().replace("-", "_").replace(" ", "_")
+        skill_id = self._generate_skill_id(skill_name)
         display_name = skill_name
         skill_md = skill_path / "SKILL.md"
         if skill_md.exists():
@@ -65,86 +56,114 @@ class SkillImportService:
                 display_name = match.group(1).strip()
 
         data = load_json("skills.json")
-        # Check if already registered
         if any(s["id"] == skill_id for s in data.get("skills", [])):
-            return skill_id  # Already registered
+            return skill_id
 
         data.setdefault("skills", []).append({
             "id": skill_id,
             "name": display_name,
-            "enabled": False,
+            "enabled": True,  # 默认启用
             "config": {}
         })
         save_json("skills.json", data)
         return skill_id
 
-    def _import_from_url(self, url: str) -> dict:
-        """Download and import a skill from URL (.skill, .zip, or git repo)."""
-        if url.startswith("git+"):
-            return self._import_from_git(url)
+    def _deregister_skill_from_json(self, skill_id: str):
+        from config import load_json, save_json
+        data = load_json("skills.json")
+        data["skills"] = [s for s in data.get("skills", []) if s["id"] != skill_id]
+        save_json("skills.json", data)
 
-        if url.endswith(".skill"):
-            return self._import_skill_package(url)
-        elif url.endswith((".zip", ".tar.gz", ".tgz")):
-            return self._extract_archive(url)
+    def is_url(self, source: str) -> bool:
+        return source.startswith(("http://", "https://", "git+"))
+
+    def import_skill(self, source: str) -> dict:
+        """Import skills from a directory path or URL."""
+        if self.is_url(source):
+            return self._import_from_url(source)
         else:
-            return self._import_skill_package(url)
+            return self._import_from_directory(source)
 
-    def _import_from_git(self, git_url: str) -> dict:
-        """Clone a git repository as a skill."""
-        repo_url = git_url.replace("git+", "")
-        repo_name = repo_url.rstrip("/").split("/")[-1].replace(".git", "")
-        dest = self.skills_dir / repo_name
+    def _import_from_directory(self, source: str) -> dict:
+        """Import all skills from a local directory path."""
+        if not os.path.exists(source):
+            return {"success": False, "error": f"路径不存在: {source}"}
 
-        if dest.exists():
-            return {"success": False, "error": f"Skill '{repo_name}' already exists"}
+        source_path = Path(source).resolve()
+        if not source_path.is_dir():
+            return {"success": False, "error": "不是有效的目录"}
 
-        try:
-            os.system(f"git clone --depth 1 {repo_url} {dest}")
-            if dest.exists():
-                self._register_to_json(repo_name, dest)
-                return {"success": True, "name": repo_name, "type": "clone", "path": str(dest)}
-            else:
-                return {"success": False, "error": "Git clone failed"}
-        except Exception as e:
-            return {"success": False, "error": str(e)}
+        # 检查是否已导入过
+        imports = self._load_imports()
+        if any(imp.get("source") == source for imp in imports):
+            return {"success": False, "error": "该路径已导入"}
 
-    def _import_skill_package(self, url: str) -> dict:
-        """Download a .skill package and extract it."""
-        parts = url.rstrip("/").split("/")
-        filename = parts[-1]
-        skill_name = filename.replace(".skill", "").replace(".zip", "")
-        tmp_file = f"/tmp/{filename}"
+        # 扫描目录下的所有 skills
+        skill_dirs = self._scan_skills_in_dir(source_path)
+        if not skill_dirs:
+            return {"success": False, "error": "目录下没有找到有效的 skills"}
 
-        try:
-            urllib.request.urlretrieve(url, tmp_file)
+        imported = []
+        failed = []
+        skill_ids = []
+
+        for skill_dir in skill_dirs:
+            skill_name = skill_dir.name
             dest = self.skills_dir / skill_name
+
             if dest.exists():
-                return {"success": False, "error": f"Skill '{skill_name}' already exists"}
+                failed.append(f"{skill_name} (已存在)")
+                continue
 
-            with zipfile.ZipFile(tmp_file, 'r') as z:
-                z.extractall(dest)
+            try:
+                is_external = not str(skill_dir).startswith(str(source_path.parent.parent))
+                if is_external:
+                    try:
+                        os.symlink(skill_dir, dest)
+                    except OSError:
+                        shutil.copytree(skill_dir, dest)
+                else:
+                    shutil.copytree(skill_dir, dest)
 
-            os.remove(tmp_file)
-            self._register_to_json(skill_name, dest)
-            return {"success": True, "name": skill_name, "type": "download", "path": str(dest)}
-        except Exception as e:
-            if os.path.exists(tmp_file):
-                os.remove(tmp_file)
-            return {"success": False, "error": str(e)}
+                skill_id = self._register_skill_to_json(skill_name, dest)
+                skill_ids.append(skill_id)
+                imported.append(skill_name)
+            except Exception as e:
+                failed.append(f"{skill_name} ({str(e)})")
 
-    def _extract_archive(self, url: str) -> dict:
-        """Extract a zip/tar.gz archive."""
+        if not imported and failed:
+            return {"success": False, "error": f"导入失败: {', '.join(failed)}"}
+
+        # 记录导入来源
+        imports.append({
+            "source": source,
+            "type": "directory",
+            "skills": skill_ids,
+            "skill_names": imported
+        })
+        self._save_imports(imports)
+
+        return {
+            "success": True,
+            "name": f"{len(imported)} 个 skills",
+            "type": "directory",
+            "imported": imported,
+            "failed": failed if failed else None,
+            "source": source
+        }
+
+    def _import_from_url(self, url: str) -> dict:
         filename = url.split("/")[-1]
         tmp_file = f"/tmp/{filename}"
 
         try:
             urllib.request.urlretrieve(url, tmp_file)
-            skill_name = filename.replace(".zip", "").replace(".tar.gz", "").replace(".tgz", "")
+            skill_name = filename.replace(".zip", "").replace(".tar.gz", "").replace(".tgz", "").replace(".skill", "")
             dest = self.skills_dir / skill_name
 
             if dest.exists():
-                return {"success": False, "error": f"Skill '{skill_name}' already exists"}
+                os.remove(tmp_file)
+                return {"success": False, "error": f"Skill '{skill_name}' 已存在"}
 
             if filename.endswith(".zip"):
                 with zipfile.ZipFile(tmp_file, 'r') as z:
@@ -154,107 +173,67 @@ class SkillImportService:
                     t.extractall(dest)
 
             os.remove(tmp_file)
-            self._register_to_json(skill_name, dest)
-            return {"success": True, "name": skill_name, "type": "download", "path": str(dest)}
+
+            if not self._is_skill_dir(dest):
+                shutil.rmtree(dest)
+                return {"success": False, "error": "压缩包内没有有效的 skill"}
+
+            skill_id = self._register_skill_to_json(skill_name, dest)
+
+            # 记录
+            imports = self._load_imports()
+            imports.append({
+                "source": url,
+                "type": "download",
+                "skills": [skill_id],
+                "skill_names": [skill_name]
+            })
+            self._save_imports(imports)
+
+            return {"success": True, "name": skill_name, "type": "download", "source": url}
         except Exception as e:
             if os.path.exists(tmp_file):
                 os.remove(tmp_file)
             return {"success": False, "error": str(e)}
 
-    def _import_from_local(self, source: str) -> dict:
-        """Import from a local path (symlink or copy). Can be a single skill or a directory of skills."""
-        if not os.path.exists(source):
-            return {"success": False, "error": f"Path does not exist: {source}"}
+    def unimport_skill(self, source: str) -> dict:
+        """Remove all skills imported from a source path/URL."""
+        imports = self._load_imports()
+        record = None
+        for i, imp in enumerate(imports):
+            if imp.get("source") == source:
+                record = imports.pop(i)
+                break
 
-        source_path = Path(source).resolve()
+        if not record:
+            return {"success": False, "error": "导入记录不存在"}
 
-        # If it's a single skill directory
-        if source_path.is_dir() and self._is_skill_dir(source_path):
-            return self._import_single_skill(source_path)
+        self._save_imports(imports)
 
-        # If it's a directory containing multiple skills
-        if source_path.is_dir():
-            return self._import_skills_directory(source_path)
+        removed = []
+        for skill_id in record.get("skills", []):
+            self._deregister_skill_from_json(skill_id)
+            removed.append(skill_id)
 
-        return {"success": False, "error": "Source is not a valid skill directory"}
+        # 清理 skills 目录下的 symlink/文件夹
+        for skill_name in record.get("skill_names", []):
+            skill_path = self.skills_dir / skill_name
+            if skill_path.exists() or skill_path.is_symlink():
+                if skill_path.is_symlink():
+                    os.unlink(skill_path)
+                elif skill_path.is_dir():
+                    shutil.rmtree(skill_path)
 
-    def _import_single_skill(self, source_path: Path) -> dict:
-        """Import a single skill directory."""
-        skill_name = source_path.name
-        dest = self.skills_dir / skill_name
+        return {"success": True, "removed": removed}
 
-        if dest.exists():
-            return {"success": False, "error": f"Skill '{skill_name}' already exists"}
-
-        if self.is_within_project(str(source_path)):
-            shutil.copytree(source_path, dest)
-            import_type = "copy"
-        else:
-            try:
-                os.symlink(source_path, dest)
-                import_type = "symlink"
-            except OSError:
-                shutil.copytree(source_path, dest)
-                import_type = "copy"
-
-        self._register_to_json(skill_name, dest)
-        return {"success": True, "name": skill_name, "type": import_type, "path": str(dest)}
-
-    def _import_skills_directory(self, source_path: Path) -> dict:
-        """Import all skills from a directory."""
-        skill_dirs = self._scan_skills_dir(source_path)
-        if not skill_dirs:
-            return {"success": False, "error": "No valid skills found in directory"}
-
-        imported = []
-        failed = []
-
-        for skill_dir in skill_dirs:
-            skill_name = skill_dir.name
-            dest = self.skills_dir / skill_name
-
-            if dest.exists():
-                failed.append(f"{skill_name} (already exists)")
-                continue
-
-            try:
-                if self.is_within_project(str(skill_dir)):
-                    shutil.copytree(skill_dir, dest)
-                    import_type = "copy"
-                else:
-                    try:
-                        os.symlink(skill_dir, dest)
-                        import_type = "symlink"
-                    except OSError:
-                        shutil.copytree(skill_dir, dest)
-                        import_type = "copy"
-
-                self._register_to_json(skill_name, dest)
-                imported.append(skill_name)
-            except Exception as e:
-                failed.append(f"{skill_name} ({str(e)})")
-
-        if not imported and failed:
-            return {"success": False, "error": f"Import failed: {', '.join(failed)}"}
-
-        return {
-            "success": True,
-            "name": f"{len(imported)} skill(s)",
-            "type": "batch",
-            "imported": imported,
-            "failed": failed if failed else None,
-            "path": str(self.skills_dir)
-        }
-
-    def list_imported_skills(self) -> List[Dict[str, Any]]:
-        """List all imported skills (both local and symlinks)."""
-        skills = []
-        for item in self.skills_dir.iterdir():
-            if item.is_dir() or item.is_symlink():
-                link_target = os.readlink(item) if item.is_symlink() else None
-                skills.append({
-                    "name": item.name,
-                    "path": str(item),
-                    "type": "symlink" if link_target else "local"
-                })
-        return skills
+    def list_import_sources(self) -> List[Dict[str, Any]]:
+        """List all import sources with their managed skills."""
+        imports = self._load_imports()
+        return [
+            {
+                "source": imp.get("source"),
+                "type": imp.get("type"),
+                "skills": [{"id": sid, "name": name} for sid, name in zip(imp.get("skills", []), imp.get("skill_names", []))]
+            }
+            for imp in imports
+        ]

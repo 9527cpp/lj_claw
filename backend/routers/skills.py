@@ -33,6 +33,19 @@ def list_imported_skills():
     """List all locally imported/skilled skills."""
     return {"skills": import_service.list_imported_skills()}
 
+@router.get("/import-sources")
+def list_import_sources():
+    """List all import sources (paths/URLs) with their managed skills."""
+    return {"sources": import_service.list_import_sources()}
+
+@router.delete("/import")
+async def unimport_skill(source: str):
+    """Remove an imported skill source and all its skills from management."""
+    result = import_service.unimport_skill(source)
+    if not result.get("success"):
+        raise HTTPException(status_code=400, detail=result.get("error", "Unimport failed"))
+    return result
+
 @router.put("/{skill_id}")
 def update_skill(skill_id: str, skill: SkillConfig):
     data = load_json("skills.json")

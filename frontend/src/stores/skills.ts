@@ -9,8 +9,16 @@ export interface Skill {
   config: Record<string, any>
 }
 
+export interface ImportSource {
+  source: string
+  path: string
+  type: string
+  skills: { id: string; name: string }[]
+}
+
 export const useSkillsStore = defineStore('skills', () => {
   const skills = ref<Skill[]>([])
+  const importSources = ref<ImportSource[]>([])
   const loading = ref(false)
 
   async function fetchSkills() {
@@ -21,6 +29,11 @@ export const useSkillsStore = defineStore('skills', () => {
     } finally {
       loading.value = false
     }
+  }
+
+  async function fetchImportSources() {
+    const res = await skillsApi.listSources()
+    importSources.value = res.data.sources || []
   }
 
   async function toggleSkill(id: string, enabled: boolean) {
@@ -38,9 +51,17 @@ export const useSkillsStore = defineStore('skills', () => {
 
   async function importSkill(source: string) {
     const res = await skillsApi.import(source)
-    await fetchSkills()  // Refresh list
+    await fetchSkills()
+    await fetchImportSources()
     return res.data
   }
 
-  return { skills, loading, fetchSkills, toggleSkill, updateSkill, importSkill }
+  async function unimportSkill(source: string) {
+    const res = await skillsApi.unimport(source)
+    await fetchSkills()
+    await fetchImportSources()
+    return res.data
+  }
+
+  return { skills, importSources, loading, fetchSkills, fetchImportSources, toggleSkill, updateSkill, importSkill, unimportSkill }
 })
