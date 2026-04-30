@@ -120,7 +120,7 @@ async function handleImportSkill() {
   importing.value = true
   importResult.value = null
   try {
-    const res = await skillsStore.importSkill(skillImportSource.value)
+    await skillsStore.importSkill(skillImportSource.value)
     importResult.value = { success: true }
     skillImportSource.value = ''
   } catch (e: any) {
@@ -172,5 +172,10 @@ h2 { margin-bottom: 16px; }
   cursor: not-allowed;
 }
 .skill-import .success { color: #4CAF50; }
-.skill-import .error { color: #f44336; }
+@media (max-width: 768px) {
+  .content { padding: 16px; }
+  .skill-import { flex-direction: column; }
+  .skill-import input { width: 100%; }
+  .skill-import button { width: 100%; }
+}
 </style>

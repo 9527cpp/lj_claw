@@ -142,5 +142,9 @@ async function handleRepeat(content: string) {
   border-radius: 24px;
   cursor: pointer;
 }
-.input-area button:disabled { background: #ccc; cursor: not-allowed; }
+@media (max-width: 768px) {
+  .chat-main { padding: 16px; }
+  .input-area input { padding: 10px 14px; }
+  .input-area button { padding: 10px 16px; }
+}
 </style>

@@ -102,4 +102,9 @@ h2 { margin-bottom: 16px; }
   background: #4CAF50;
   color: white;
 }
+
+@media (max-width: 768px) {
+  .model-form { width: 95%; padding: 16px; }
+  .form-group input, .form-group select { font-size: 16px; }
+}
 </style>
