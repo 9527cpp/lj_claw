@@ -1,3 +1,14 @@
 {
-  "skills": []
+  "skills": [
+    {
+      "id": "weather",
+      "name": "天气查询",
+      "enabled": true,
+      "config": {
+        "api_host": "nh63yxkmk9.re.qweatherapi.com",
+        "api_key": "59f56d3fd9f647e5949b89dfb2d083d6",
+        "description": "查询全球城市天气信息，支持城市名称或坐标查询"
+      }
+    }
+  ]
 }

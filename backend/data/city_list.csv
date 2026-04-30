@@ -229,4 +229,107 @@ Location_ID,Location_Name_EN,Location_Name_ZH,ISO_3166_1,Country_Region_EN,Count
 101060103,Dehui,德惠,CN,China,中国,Jilin,吉林省,Changchun,长春市,Asia/Shanghai,44.5339,125.7033,220183
 101060104,Jiutai,九台,CN,China,中国,Jilin,吉林省,Changchun,长春市,Asia/Shanghai,44.1572,125.8447,220113
 101060105,Yushu Prefecture,榆树,CN,China,中国,Jilin,吉林省,Changchun,长春市,Asia/Shanghai,44.8276,126.5501,220182
-101060106,Shuangyang,双阳,CN,China,中国,Jilin,吉林省,Changchun,长春市,Asia/Shangha
+101060106,Shuangyang,双阳,CN,China,中国,Jilin,吉林省,Changchun,长春市,Asia/Shanghai,43.5252,125.6590,220112
+101060107,Erdao,二道,CN,China,中国,Jilin,吉林省,Changchun,长春市,Asia/Shanghai,43.8708,125.3847,220105
+101060108,Nanguan,南关,CN,China,中国,Jilin,吉林省,Changchun,长春市,Asia/Shanghai,43.8902,125.3372,220102
+101060109,Kuancheng,宽城,CN,China,中国,Jilin,吉林省,Changchun,长春市,Asia/Shanghai,43.9038,125.3428,220103
+101060110,Chaoyang,朝阳,CN,China,中国,Jilin,吉林省,Changchun,长春市,Asia/Shanghai,43.8649,125.3180,220104
+101060111,Luyuan,绿园,CN,China,中国,Jilin,吉林省,Changchun,长春市,Asia/Shanghai,43.8922,125.2725,220106
+101060201,Jilin,吉林,CN,China,中国,Jilin,吉林省,Jilin,吉林市,Asia/Shanghai,43.8436,126.5530,220200
+101060202,Shulan,舒兰,CN,China,中国,Jilin,吉林省,Jilin,吉林市,Asia/Shanghai,44.4109,126.9478,220283
+101060203,Yongji,永吉,CN,China,中国,Jilin,吉林省,Jilin,吉林市,Asia/Shanghai,43.6674,126.5016,220221
+101060204,Jiaohe,蛟河,CN,China,中国,Jilin,吉林省,Jilin,吉林市,Asia/Shanghai,43.7206,127.3427,220281
+101060205,Panshi,磐石,CN,China,中国,Jilin,吉林省,Jilin,吉林市,Asia/Shanghai,42.9425,126.0599,220284
+101060206,Huadian,桦甸,CN,China,中国,Jilin,吉林省,Jilin,吉林市,Asia/Shanghai,42.9721,126.7454,220282
+101060207,Changyi,昌邑,CN,China,中国,Jilin,吉林省,Jilin,吉林市,Asia/Shanghai,43.8511,126.5708,220202
+101060208,Longtan,龙潭,CN,China,中国,Jilin,吉林省,Jilin,吉林市,Asia/Shanghai,43.9098,126.5614,220203
+101060209,Chuanying,船营,CN,China,中国,Jilin,吉林省,Jilin,吉林市,Asia/Shanghai,43.8438,126.5524,220204
+101060210,Fengman,丰满,CN,China,中国,Jilin,吉林省,Jilin,吉林市,Asia/Shanghai,43.8166,126.5608,220211
+101060301,Yanji,延吉,CN,China,中国,Jilin,吉林省,Yanbian Korean Autonomous Prefecture,延边朝鲜族自治州,Asia/Shanghai,42.9070,129.5158,222401
+101060302,Dunhua,敦化,CN,China,中国,Jilin,吉林省,Yanbian Korean Autonomous Prefecture,延边朝鲜族自治州,Asia/Shanghai,43.3669,128.2299,222403
+101060303,Antu,安图,CN,China,中国,Jilin,吉林省,Yanbian Korean Autonomous Prefecture,延边朝鲜族自治州,Asia/Shanghai,43.1110,128.9019,222426
+101060304,Wangqing,汪清,CN,China,中国,Jilin,吉林省,Yanbian Korean Autonomous Prefecture,延边朝鲜族自治州,Asia/Shanghai,43.3154,129.7662,222424
+101060305,Helong,和龙,CN,China,中国,Jilin,吉林省,Yanbian Korean Autonomous Prefecture,延边朝鲜族自治州,Asia/Shanghai,42.5470,129.0087,222406
+101060306,Yanbian Prefecture,延边,CN,China,中国,Jilin,吉林省,Yanbian Korean Autonomous Prefecture,延边朝鲜族自治州,Asia/Shanghai,42.9048,129.5132,222400
+101060307,Longjing,龙井,CN,China,中国,Jilin,吉林省,Yanbian Korean Autonomous Prefecture,延边朝鲜族自治州,Asia/Shanghai,42.7710,129.4258,222405
+101060308,Hunchun,珲春,CN,China,中国,Jilin,吉林省,Yanbian Korean Autonomous Prefecture,延边朝鲜族自治州,Asia/Shanghai,42.8711,130.3658,222404
+101060309,Tumen,图们,CN,China,中国,Jilin,吉林省,Yanbian Korean Autonomous Prefecture,延边朝鲜族自治州,Asia/Shanghai,42.9666,129.8467,222402
+101060401,Siping,四平,CN,China,中国,Jilin,吉林省,Siping,四平市,Asia/Shanghai,43.1703,124.3708,220300
+101060402,Shuangliao,双辽,CN,China,中国,Jilin,吉林省,Siping,四平市,Asia/Shanghai,43.5183,123.5053,220382
+101060403,Lishu,梨树,CN,China,中国,Jilin,吉林省,Siping,四平市,Asia/Shanghai,43.3083,124.3358,220322
+101060404,Gongzhuling,公主岭,CN,China,中国,Jilin,吉林省,Changchun,长春市,Asia/Shanghai,43.5095,124.8176,220184
+101060405,Yitong,伊通,CN,China,中国,Jilin,吉林省,Siping,四平市,Asia/Shanghai,43.3455,125.3031,220323
+101060406,Tiexi,铁西,CN,China,中国,Jilin,吉林省,Siping,四平市,Asia/Shanghai,43.1763,124.3609,220302
+101060407,Tiedong,铁东,CN,China,中国,Jilin,吉林省,Siping,四平市,Asia/Shanghai,43.1673,124.3885,220303
+101060501,Tonghua,通化,CN,China,中国,Jilin,吉林省,Tonghua,通化市,Asia/Shanghai,41.7212,125.9365,220500
+101060502,Meihekou,梅河口,CN,China,中国,Jilin,吉林省,Tonghua,通化市,Asia/Shanghai,42.5300,125.6873,220581
+101060503,Liuhe,柳河,CN,China,中国,Jilin,吉林省,Tonghua,通化市,Asia/Shanghai,42.2815,125.7405,220524
+101060504,Huinan,辉南,CN,China,中国,Jilin,吉林省,Tonghua,通化市,Asia/Shanghai,42.6835,126.0428,220523
+101060505,Ji'an,集安,CN,China,中国,Jilin,吉林省,Tonghua,通化市,Asia/Shanghai,41.1263,126.1862,220582
+101060506,Tonghua County,通化县,CN,China,中国,Jilin,吉林省,Tonghua,通化市,Asia/Shanghai,41.6779,125.7531,220521
+101060507,Dongchang,东昌,CN,China,中国,Jilin,吉林省,Tonghua,通化市,Asia/Shanghai,41.7212,125.9367,220502
+101060508,Erdaojiang,二道江,CN,China,中国,Jilin,吉林省,Tonghua,通化市,Asia/Shanghai,41.7776,126.0460,220503
+101060601,Baicheng,白城,CN,China,中国,Jilin,吉林省,Baicheng,白城市,Asia/Shanghai,45.6190,122.8411,220800
+101060602,Taonan,洮南,CN,China,中国,Jilin,吉林省,Baicheng,白城市,Asia/Shanghai,45.3391,122.7838,220881
+101060603,Da'an,大安,CN,China,中国,Jilin,吉林省,Baicheng,白城市,Asia/Shanghai,45.5076,124.2915,220882
+101060604,Zhenlai,镇赉,CN,China,中国,Jilin,吉林省,Baicheng,白城市,Asia/Shanghai,45.8461,123.2022,220821
+101060605,Tongyu,通榆,CN,China,中国,Jilin,吉林省,Baicheng,白城市,Asia/Shanghai,44.8092,123.0885,220822
+101060606,Taobei,洮北,CN,China,中国,Jilin,吉林省,Baicheng,白城市,Asia/Shanghai,45.6193,122.8425,220802
+101060701,Liaoyuan,辽源,CN,China,中国,Jilin,吉林省,Liaoyuan,辽源市,Asia/Shanghai,42.9027,125.1453,220400
+101060702,Dongfeng,东丰,CN,China,中国,Jilin,吉林省,Liaoyuan,辽源市,Asia/Shanghai,42.6752,125.5296,220421
+101060703,Dongliao,东辽,CN,China,中国,Jilin,吉林省,Liaoyuan,辽源市,Asia/Shanghai,42.9277,124.9920,220422
+101060704,Longshan,龙山,CN,China,中国,Jilin,吉林省,Liaoyuan,辽源市,Asia/Shanghai,42.9027,125.1452,220402
+101060705,Xi'an,西安,CN,China,中国,Jilin,吉林省,Liaoyuan,辽源市,Asia/Shanghai,42.9204,125.1514,220403
+101060801,Songyuan,松原,CN,China,中国,Jilin,吉林省,Songyuan,松原市,Asia/Shanghai,45.1182,124.8236,220700
+101060802,Qian'an,乾安,CN,China,中国,Jilin,吉林省,Songyuan,松原市,Asia/Shanghai,45.0068,124.0244,220723
+101060803,Qian Gorlos,前郭,CN,China,中国,Jilin,吉林省,Songyuan,松原市,Asia/Shanghai,45.1163,124.8268,220721
+101060804,Changling,长岭,CN,China,中国,Jilin,吉林省,Songyuan,松原市,Asia/Shanghai,44.2766,123.9852,220722
+101060805,Fuyu,扶余,CN,China,中国,Jilin,吉林省,Songyuan,松原市,Asia/Shanghai,44.9862,126.0428,220781
+101060806,Ningjiang,宁江,CN,China,中国,Jilin,吉林省,Songyuan,松原市,Asia/Shanghai,45.1765,124.8279,220702
+101060901,Baishan,白山,CN,China,中国,Jilin,吉林省,Baishan,白山市,Asia/Shanghai,41.9425,126.4278,220600
+101060902,Jingyu,靖宇,CN,China,中国,Jilin,吉林省,Baishan,白山市,Asia/Shanghai,42.3897,126.8084,220622
+101060903,Linjiang,临江,CN,China,中国,Jilin,吉林省,Baishan,白山市,Asia/Shanghai,41.8107,126.9193,220681
+101060905,Changbai,长白,CN,China,中国,Jilin,吉林省,Baishan,白山市,Asia/Shanghai,41.4194,128.2034,220623
+101060906,Fusong,抚松,CN,China,中国,Jilin,吉林省,Baishan,白山市,Asia/Shanghai,42.2210,127.4494,220621
+101060907,Jiangyuan,江源,CN,China,中国,Jilin,吉林省,Baishan,白山市,Asia/Shanghai,42.0481,126.5842,220605
+101060908,Hunjiang,浑江,CN,China,中国,Jilin,吉林省,Baishan,白山市,Asia/Shanghai,41.9431,126.4280,220602
+101070101,Shenyang,沈阳,CN,China,中国,Liaoning,辽宁省,Shenyang,沈阳市,Asia/Shanghai,41.6776,123.4647,210100
+101070102,Hunnan,浑南,CN,China,中国,Liaoning,辽宁省,Shenyang,沈阳市,Asia/Shanghai,41.7419,123.4590,210112
+101070103,Liaozhong,辽中,CN,China,中国,Liaoning,辽宁省,Shenyang,沈阳市,Asia/Shanghai,41.5127,122.7313,210115
+101070104,Kangping,康平,CN,China,中国,Liaoning,辽宁省,Shenyang,沈阳市,Asia/Shanghai,42.7415,123.3527,210123
+101070105,Faku,法库,CN,China,中国,Liaoning,辽宁省,Shenyang,沈阳市,Asia/Shanghai,42.5070,123.4167,210124
+101070106,Xinmin,新民,CN,China,中国,Liaoning,辽宁省,Shenyang,沈阳市,Asia/Shanghai,41.9965,122.8289,210181
+101070107,Heping,和平,CN,China,中国,Liaoning,辽宁省,Shenyang,沈阳市,Asia/Shanghai,41.7881,123.4067,210102
+101070108,Shenhe,沈河,CN,China,中国,Liaoning,辽宁省,Shenyang,沈阳市,Asia/Shanghai,41.7956,123.4457,210103
+101070109,Dadong,大东,CN,China,中国,Liaoning,辽宁省,Shenyang,沈阳市,Asia/Shanghai,41.8085,123.4700,210104
+101070110,Huanggu,皇姑,CN,China,中国,Liaoning,辽宁省,Shenyang,沈阳市,Asia/Shanghai,41.8223,123.4057,210105
+101070111,Tiexi,铁西,CN,China,中国,Liaoning,辽宁省,Shenyang,沈阳市,Asia/Shanghai,41.7878,123.3507,210106
+101070112,Sujiatun,苏家屯,CN,China,中国,Liaoning,辽宁省,Shenyang,沈阳市,Asia/Shanghai,41.6659,123.3416,210111
+101070113,Shenbei New Area,沈北新区,CN,China,中国,Liaoning,辽宁省,Shenyang,沈阳市,Asia/Shanghai,41.9131,123.5842,210113
+101070114,Yuhong,于洪,CN,China,中国,Liaoning,辽宁省,Shenyang,沈阳市,Asia/Shanghai,41.7958,123.3108,210114
+101070201,Dalian,大连,CN,China,中国,Liaoning,辽宁省,Dalian,大连市,Asia/Shanghai,38.9146,121.6186,210200
+101070202,Wafangdian,瓦房店,CN,China,中国,Liaoning,辽宁省,Dalian,大连市,Asia/Shanghai,39.6307,122.0027,210281
+101070203,Jinzhou,金州,CN,China,中国,Liaoning,辽宁省,Dalian,大连市,Asia/Shanghai,39.0527,121.7894,210213
+101070204,Pulandian,普兰店,CN,China,中国,Liaoning,辽宁省,Dalian,大连市,Asia/Shanghai,39.4016,121.9705,210214
+101070205,Lyushunkou,旅顺,CN,China,中国,Liaoning,辽宁省,Dalian,大连市,Asia/Shanghai,38.8120,121.2671,210212
+101070206,Changhai,长海,CN,China,中国,Liaoning,辽宁省,Dalian,大连市,Asia/Shanghai,39.2724,122.5878,210224
+101070207,Zhuanghe,庄河,CN,China,中国,Liaoning,辽宁省,Dalian,大连市,Asia/Shanghai,39.6983,122.9706,210283
+101070208,Zhongshan,中山,CN,China,中国,Liaoning,辽宁省,Dalian,大连市,Asia/Shanghai,38.9216,121.6438,210202
+101070209,Xigang,西岗,CN,China,中国,Liaoning,辽宁省,Dalian,大连市,Asia/Shanghai,38.9143,121.6161,210203
+101070210,Shahekou,沙河口,CN,China,中国,Liaoning,辽宁省,Dalian,大连市,Asia/Shanghai,38.9129,121.5937,210204
+101070211,Ganjingzi,甘井子,CN,China,中国,Liaoning,辽宁省,Dalian,大连市,Asia/Shanghai,38.9530,121.5255,210211
+101070301,Anshan,鞍山,CN,China,中国,Liaoning,辽宁省,Anshan,鞍山市,Asia/Shanghai,41.1106,122.9956,210300
+101070302,Tai'an,台安,CN,China,中国,Liaoning,辽宁省,Anshan,鞍山市,Asia/Shanghai,41.3869,122.4297,210321
+101070303,Xiuyan,岫岩,CN,China,中国,Liaoning,辽宁省,Anshan,鞍山市,Asia/Shanghai,40.2815,123.2883,210323
+101070304,Haicheng,海城,CN,China,中国,Liaoning,辽宁省,Anshan,鞍山市,Asia/Shanghai,40.8826,122.6852,210381
+101070305,Tiedong,铁东,CN,China,中国,Liaoning,辽宁省,Anshan,鞍山市,Asia/Shanghai,41.1103,122.9945,210302
+101070306,Tiexi,铁西,CN,China,中国,Liaoning,辽宁省,Anshan,鞍山市,Asia/Shanghai,41.1107,122.9718,210303
+101070307,Lishan,立山,CN,China,中国,Liaoning,辽宁省,Anshan,鞍山市,Asia/Shanghai,41.1506,123.0248,210304
+101070308,Qianshan,千山,CN,China,中国,Liaoning,辽宁省,Anshan,鞍山市,Asia/Shanghai,41.0689,122.9493,210311
+101070401,Fushun,抚顺,CN,China,中国,Liaoning,辽宁省,Fushun,抚顺市,Asia/Shanghai,41.8813,123.9571,210400
+101070402,Xinbin,新宾,CN,China,中国,Liaoning,辽宁省,Fushun,抚顺市,Asia/Shanghai,41.7325,125.0375,210422
+101070403,Qingyuan,清原,CN,China,中国,Liaoning,辽宁省,Fushun,抚顺市,Asia/Shanghai,42.1013,124.9272,210423
+101070405,Xinfu,新抚,CN,China,中国,Liaoning,辽宁省,Fushun,抚顺市,Asia/Shanghai,41.8608,123.9029,210402
+101070406,Dongzhou,东洲,CN,China,中国,Liaoning,辽宁省,Fushun,抚顺市,Asia/Shanghai,41.8668,124.0472,210403
+101070407,Wanghua,望花,CN,China,中国,Liaoning,辽宁省,Fushun,抚顺市,Asia/Shanghai,41.8518,123.8015,210404
+101070408,Shuncheng,顺城,CN,China,中国,Liaoning,辽宁省,Fushun,
