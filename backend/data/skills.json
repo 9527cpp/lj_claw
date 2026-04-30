@@ -1,14 +1,1243 @@
 {
   "skills": [
     {
+      "id": "nano_pdf",
+      "name": "nano-pdf",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "himalaya",
+      "name": "Himalaya Email CLI",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "bear_notes",
+      "name": "Bear Notes",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "peekaboo",
+      "name": "Peekaboo",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "model_usage",
+      "name": "Model usage",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "blogwatcher",
+      "name": "blogwatcher",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "discord",
+      "name": "Discord (Via `message`)",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "coding_agent",
+      "name": "Coding Agent (always backgrounded)",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "openhue",
+      "name": "OpenHue CLI",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "gemini",
+      "name": "Gemini CLI",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "gifgrep",
+      "name": "gifgrep",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "session_logs",
+      "name": "session-logs",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "node_connect",
+      "name": "Node Connect",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "ordercli",
+      "name": "ordercli",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "openai_whisper",
+      "name": "Whisper (CLI)",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "spotify_player",
+      "name": "spogo / spotify_player",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "healthcheck",
+      "name": "OpenClaw Host Hardening",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "oracle",
+      "name": "oracle — best use",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "xurl",
+      "name": "xurl — Agent Skill Reference",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "summarize",
+      "name": "Summarize",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "clawhub",
+      "name": "ClawHub CLI",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "bluebubbles",
+      "name": "BlueBubbles Actions",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "sherpa_onnx_tts",
+      "name": "sherpa-onnx-tts",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "video_frames",
+      "name": "Video Frames (ffmpeg)",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "eightctl",
+      "name": "eightctl",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "gog",
+      "name": "gog",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "canvas",
+      "name": "Canvas Skill",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "notion",
+      "name": "notion",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "goplaces",
+      "name": "goplaces",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "apple_reminders",
+      "name": "Apple Reminders CLI (remindctl)",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "imsg",
+      "name": "imsg",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "skill_creator",
+      "name": "Skill Creator",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "camsnap",
+      "name": "camsnap",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "github",
+      "name": "GitHub Skill",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "taskflow_inbox_triage",
+      "name": "TaskFlow inbox triage",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "things_mac",
+      "name": "Things 3 CLI",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "blucli",
+      "name": "blucli (blu)",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "sonoscli",
+      "name": "Sonos CLI",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "mcporter",
+      "name": "mcporter",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "tmux",
+      "name": "tmux Session Control",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "sag",
+      "name": "sag",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "slack",
+      "name": "Slack Actions",
+      "enabled": false,
+      "config": {}
+    },
+    {
       "id": "weather",
-      "name": "天气查询",
-      "enabled": true,
+      "name": "Weather Skill",
+      "enabled": false,
       "config": {
-        "api_host": "nh63yxkmk9.re.qweatherapi.com",
-        "api_key": "59f56d3fd9f647e5949b89dfb2d083d6",
-        "description": "查询全球城市天气信息，支持城市名称或坐标查询"
+        "api_key": "your-key-here",
+        "api_host": "devapi.qweather.com"
       }
+    },
+    {
+      "id": "obsidian",
+      "name": "Obsidian",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "trello",
+      "name": "Trello Skill",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "wacli",
+      "name": "wacli",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "songsee",
+      "name": "songsee",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "apple_notes",
+      "name": "Apple Notes CLI",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "taskflow",
+      "name": "TaskFlow",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "openai_whisper_api",
+      "name": "OpenAI Whisper API (curl)",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "gh_issues",
+      "name": "gh-issues — Auto-fix GitHub Issues with Parallel Sub-agents",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "1password",
+      "name": "1Password CLI",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "voice_call",
+      "name": "Voice Call",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "brand_voice",
+      "name": "Brand Voice",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "code_summary",
+      "name": "Code Summary (Git → Markdown)",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "knowledge_ops",
+      "name": "Knowledge Operations",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "django_security",
+      "name": "Django Security Best Practices",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "compose_multiplatform_patterns",
+      "name": "Compose Multiplatform Patterns",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "customer_billing_ops",
+      "name": "Customer Billing Ops",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "golang_patterns",
+      "name": "Go Development Patterns",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "kotlin_exposed_patterns",
+      "name": "Kotlin Exposed Patterns",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "energy_procurement",
+      "name": "Energy Procurement",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "django_patterns",
+      "name": "Django Development Patterns",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "agent_introspection_debugging",
+      "name": "Agent Introspection Debugging",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "code_tour",
+      "name": "Code Tour",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "ecc_tools_cost_audit",
+      "name": "ECC Tools Cost Audit",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "ui_demo",
+      "name": "UI Demo Video Recorder",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "laravel_security",
+      "name": "Laravel Security Best Practices",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "swift_concurrency_6_2",
+      "name": "Swift 6.2 Approachable Concurrency",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "python_testing",
+      "name": "Python Testing Patterns",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "x_api",
+      "name": "X API",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "kotlin_testing",
+      "name": "Kotlin Testing Patterns",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "docker_patterns",
+      "name": "Docker Patterns",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "social_graph_ranker",
+      "name": "Social Graph Ranker",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "laravel_patterns",
+      "name": "Laravel Development Patterns",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "nanoclaw_repl",
+      "name": "NanoClaw REPL",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "iterative_retrieval",
+      "name": "Iterative Retrieval Pattern",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "springboot_patterns",
+      "name": "Spring Boot Development Patterns",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "postgres_patterns",
+      "name": "PostgreSQL Patterns",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "email_ops",
+      "name": "Email Ops",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "cpp_testing",
+      "name": "C++ Testing (Agent Skill)",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "omc_reference",
+      "name": "OMC Reference",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "team_builder",
+      "name": "Team Builder",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "enterprise_agent_ops",
+      "name": "Enterprise Agent Ops",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "clickhouse_io",
+      "name": "ClickHouse Analytics Patterns",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "videodb",
+      "name": "VideoDB Skill",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "autonomous_loops",
+      "name": "Autonomous Loops Skill",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "liquid_glass_design",
+      "name": "Liquid Glass Design System (iOS 26)",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "springboot_security",
+      "name": "Spring Boot Security Review",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "connections_optimizer",
+      "name": "Connections Optimizer",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "swift_actor_persistence",
+      "name": "Swift Actors for Thread-Safe Persistence",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "council",
+      "name": "Council",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "coding_standards",
+      "name": "Coding Standards & Best Practices",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "csharp_testing",
+      "name": "C# Testing Patterns",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "lead_intelligence",
+      "name": "Lead Intelligence",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "mcp_server_patterns",
+      "name": "MCP Server Patterns",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "eval_harness",
+      "name": "Eval Harness Skill",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "returns_reverse_logistics",
+      "name": "Returns & Reverse Logistics",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "api_connector_builder",
+      "name": "API Connector Builder",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "cost_aware_llm_pipeline",
+      "name": "Cost-Aware LLM Pipeline",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "investor_outreach",
+      "name": "Investor Outreach",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "dashboard_builder",
+      "name": "Dashboard Builder",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "security_bounty_hunter",
+      "name": "Security Bounty Hunter",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "prompt_optimizer",
+      "name": "Prompt Optimizer",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "claude_api",
+      "name": "Claude API",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "agent_harness_construction",
+      "name": "Agent Harness Construction",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "remotion_video_creation",
+      "name": "remotion-video-creation",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "customs_trade_compliance",
+      "name": "Customs & Trade Compliance",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "market_research",
+      "name": "Market Research",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "data_scraper_agent",
+      "name": "Data Scraper Agent",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "deep_research",
+      "name": "Deep Research",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "exa_search",
+      "name": "Exa Search",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "terminal_ops",
+      "name": "Terminal Ops",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "token_budget_advisor",
+      "name": "Token Budget Advisor (TBA)",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "article_writing",
+      "name": "Article Writing",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "workspace_surface_audit",
+      "name": "Workspace Surface Audit",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "dmux_workflows",
+      "name": "dmux Workflows",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "backend_patterns",
+      "name": "Backend Development Patterns",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "research_ops",
+      "name": "Research Ops",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "logistics_exception_management",
+      "name": "Logistics Exception Management",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "nodejs_keccak256",
+      "name": "Node.js Keccak-256",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "api_design",
+      "name": "API Design Patterns",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "github_ops",
+      "name": "GitHub Operations",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "google_workspace_ops",
+      "name": "Google Workspace Ops",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "nutrient_document_processing",
+      "name": "Nutrient Document Processing",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "nestjs_patterns",
+      "name": "NestJS Development Patterns",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "production_scheduling",
+      "name": "Production Scheduling",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "kotlin_patterns",
+      "name": "Kotlin Development Patterns",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "jira_integration",
+      "name": "Jira Integration Skill",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "hipaa_compliance",
+      "name": "HIPAA Compliance",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "inventory_demand_planning",
+      "name": "Inventory Demand Planning",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "perl_testing",
+      "name": "Perl Testing Patterns",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "project_flow_ops",
+      "name": "Project Flow Ops",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "laravel_tdd",
+      "name": "Laravel TDD Workflow",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "plankton_code_quality",
+      "name": "Plankton Code Quality Skill",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "security_scan",
+      "name": "Security Scan Skill",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "rust_patterns",
+      "name": "Rust Development Patterns",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "video_editing",
+      "name": "Video Editing",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "product_capability",
+      "name": "Product Capability",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "carrier_relationship_management",
+      "name": "Carrier Relationship Management",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "defi_amm_security",
+      "name": "DeFi AMM Security",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "fal_ai_media",
+      "name": "fal.ai Media Generation",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "deployment_patterns",
+      "name": "Deployment Patterns",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "laravel_plugin_discovery",
+      "name": "Laravel Plugin Discovery",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "finance_billing_ops",
+      "name": "Finance Billing Ops",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "claude_devfleet",
+      "name": "Claude DevFleet Multi-Agent Orchestration",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "e2e_testing",
+      "name": "E2E Testing Patterns",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "visa_doc_translate",
+      "name": "visa-doc-translate",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "agentic_engineering",
+      "name": "Agentic Engineering",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "swift_protocol_di_testing",
+      "name": "Swift Protocol-Based Dependency Injection for Testing",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "content_hash_cache_pattern",
+      "name": "Content-Hash File Cache Pattern",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "evm_token_decimals",
+      "name": "EVM Token Decimals",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "jpa_patterns",
+      "name": "JPA/Hibernate Patterns",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "git_rewrite_commit_dates",
+      "name": "Git Rewrite Commit Dates",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "continuous_learning",
+      "name": "Continuous Learning Skill",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "continuous_learning_v2",
+      "name": "Continuous Learning v2.1 - Instinct",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "llm_trading_agent_security",
+      "name": "LLM Trading Agent Security",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "manim_video",
+      "name": "Manim Video",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "verification_loop",
+      "name": "Verification Loop Skill",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "perl_security",
+      "name": "Perl Security Patterns",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "frontend_slides",
+      "name": "Frontend Slides",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "tdd_workflow",
+      "name": "Test-Driven Development Workflow",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "perl_patterns",
+      "name": "Modern Perl Development Patterns",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "cpp_coding_standards",
+      "name": "C++ Coding Standards (C++ Core Guidelines)",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "springboot_verification",
+      "name": "Spring Boot Verification Loop",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "database_migrations",
+      "name": "Database Migration Patterns",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "ai_regression_testing",
+      "name": "AI Regression Testing",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "content_engine",
+      "name": "Content Engine",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "dart_flutter_patterns",
+      "name": "Dart/Flutter Patterns",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "unified_notifications_ops",
+      "name": "Unified Notifications Ops",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "kotlin_coroutines_flows",
+      "name": "Kotlin Coroutines & Flows",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "frontend_design",
+      "name": "Frontend Design",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "messages_ops",
+      "name": "Messages Ops",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "hookify_rules",
+      "name": "Writing Hookify Rules",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "django_verification",
+      "name": "Django Verification Loop",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "swiftui_patterns",
+      "name": "SwiftUI Patterns",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "agent_sort",
+      "name": "Agent Sort",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "crosspost",
+      "name": "Crosspost",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "seo",
+      "name": "SEO",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "healthcare_phi_compliance",
+      "name": "Healthcare PHI/PII Compliance Patterns",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "java_coding_standards",
+      "name": "Java Coding Standards",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "kotlin_ktor_patterns",
+      "name": "Ktor Server Patterns",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "django_tdd",
+      "name": "Django Testing with TDD",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "frontend_patterns",
+      "name": "Frontend Development Patterns",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "ai_first_engineering",
+      "name": "AI-First Engineering",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "laravel_verification",
+      "name": "Laravel Verification Loop",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "automation_audit_ops",
+      "name": "Automation Audit Ops",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "zhangxuefeng_skill",
+      "name": "张雪峰 · 思维操作系统",
+      "enabled": true,
+      "config": {}
+    },
+    {
+      "id": "skill_stocktake",
+      "name": "skill-stocktake",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "ralphinho_rfc_pipeline",
+      "name": "Ralphinho RFC Pipeline",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "dotnet_patterns",
+      "name": ".NET Development Patterns",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "rust_testing",
+      "name": "Rust Testing Patterns",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "search_first",
+      "name": "/search-first — Research Before You Code",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "springboot_tdd",
+      "name": "Spring Boot TDD Workflow",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "python_patterns",
+      "name": "Python Development Patterns",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "security_review",
+      "name": "Security Review Skill",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "android_clean_architecture",
+      "name": "Android Clean Architecture",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "blueprint",
+      "name": "Blueprint — Construction Plan Generator",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "quality_nonconformance",
+      "name": "Quality & Non-Conformance Management",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "investor_materials",
+      "name": "Investor Materials",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "configure_ecc",
+      "name": "Configure Everything Claude Code (ECC)",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "strategic_compact",
+      "name": "Strategic Compact Skill",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "continuous_agent_loop",
+      "name": "Continuous Agent Loop",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "golang_testing",
+      "name": "Go Testing Patterns",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "regex_vs_llm_structured_text",
+      "name": "Regex vs LLM for Structured Text Parsing",
+      "enabled": false,
+      "config": {}
+    },
+    {
+      "id": "foundation_models_on_device",
+      "name": "FoundationModels: On-Device LLM (iOS 26)",
+      "enabled": false,
+      "config": {}
     }
   ]
 }

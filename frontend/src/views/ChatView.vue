@@ -18,7 +18,7 @@
         >
           <div class="session-info">
             <span class="session-name">{{ session.name }}</span>
-            <span class="session-time">{{ formatTime(session.updated_at) }}</span>
+            <span class="session-meta">{{ session.message_count }}条对话 · {{ formatTime(session.updated_at) }}</span>
           </div>
           <div class="session-actions">
             <button class="action-btn" @click.stop="handleRename(session)" title="重命名">✏️</button>
@@ -273,7 +273,7 @@ function formatTime(isoString: string): string {
   text-overflow: ellipsis;
 }
 
-.session-time {
+.session-meta {
   font-size: 11px;
   color: #999;
   margin-top: 2px;
