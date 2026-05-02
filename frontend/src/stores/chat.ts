@@ -20,6 +20,14 @@ export const useChatStore = defineStore('chat', () => {
   const messages = ref<Message[]>([])
   const loading = ref(false)
   const error = ref<string | null>(null)
+  let abortController: AbortController | null = null
+
+  function cancel() {
+    if (abortController) {
+      abortController.abort()
+      abortController = null
+    }
+  }
 
   async function fetchSessions() {
     try {
@@ -106,6 +114,8 @@ export const useChatStore = defineStore('chat', () => {
   }
 
   async function sendMessage(content: string, modelId?: string) {
+    cancel()
+    abortController = new AbortController()
     loading.value = true
     error.value = null
 
@@ -115,7 +125,8 @@ export const useChatStore = defineStore('chat', () => {
       const response = await fetch('/api/chat/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: content, model_id: modelId, session_id: activeSessionId.value })
+        body: JSON.stringify({ message: content, model_id: modelId, session_id: activeSessionId.value }),
+        signal: abortController.signal,
       })
 
       const reader = response.body?.getReader()
@@ -158,9 +169,15 @@ export const useChatStore = defineStore('chat', () => {
       // Refresh sessions to update message counts
       await fetchSessions()
     } catch (e: any) {
-      error.value = e.message || '发送失败'
+      if (e.name === 'AbortError') {
+        // User cancelled - trim the last user message
+        messages.value = messages.value.slice(0, -1)
+      } else {
+        error.value = e.message || '发送失败'
+      }
     } finally {
       loading.value = false
+      abortController = null
     }
   }
 
@@ -180,6 +197,7 @@ export const useChatStore = defineStore('chat', () => {
     messages,
     loading,
     error,
+    cancel,
     fetchSessions,
     createSession,
     switchSession,

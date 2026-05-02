@@ -65,15 +65,25 @@
       </div>
 
       <div class="input-area">
-        <input
-          v-model="inputMessage"
-          placeholder="输入消息..."
-          :disabled="chatStore.loading"
-          @keydown.enter="handleSend"
-        />
-        <button @click="handleSend" :disabled="chatStore.loading || !inputMessage.trim()">
-          发送
-        </button>
+        <div class="input-wrapper" :class="{ loading: chatStore.loading }">
+          <input
+            v-model="inputMessage"
+            placeholder="输入消息，Enter 发送..."
+            :disabled="chatStore.loading"
+            @keydown.enter.exact.prevent="handleSend"
+            ref="inputEl"
+          />
+          <button
+            v-if="chatStore.loading"
+            class="stop-btn"
+            @click="handleCancel"
+            title="停止生成"
+          >
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+              <rect x="6" y="6" width="12" height="12" rx="2"/>
+            </svg>
+          </button>
+        </div>
       </div>
     </main>
   </div>
@@ -89,6 +99,7 @@ const inputMessage = ref('')
 const messagesEl = ref<HTMLElement>()
 const bottomEl = ref<HTMLElement>()
 const sessionsOpen = ref(false)
+const inputEl = ref<HTMLInputElement>()
 
 const currentSessionName = computed(() => {
   const session = chatStore.sessions.find(s => s.id === chatStore.activeSessionId)
@@ -123,6 +134,11 @@ async function handleSend() {
   if (messagesEl.value) {
     messagesEl.value.scrollTop = messagesEl.value.scrollHeight
   }
+  inputEl.value?.focus()
+}
+
+function handleCancel() {
+  chatStore.cancel()
 }
 
 async function handleRepeat(content: string) {
@@ -414,34 +430,85 @@ function formatTime(isoString: string): string {
 
 .input-area {
   display: flex;
-  gap: 8px;
   padding-top: 16px;
-  border-top: 1px solid #e0e0e0;
+  padding-bottom: 24px;
+  padding-left: 24px;
+  padding-right: 24px;
 }
 
-.input-area input {
+.input-wrapper {
   flex: 1;
-  padding: 12px 16px;
-  border: 1px solid #ddd;
+  display: flex;
+  align-items: center;
+  background: white;
+  border: 1.5px solid #e0e0e0;
   border-radius: 24px;
-  outline: none;
+  padding: 0 8px 0 20px;
+  transition: border-color 0.2s;
+  max-width: 800px;
+  margin: 0 auto;
 }
 
-.input-area input:focus { border-color: #2196F3; }
+.input-wrapper:focus-within {
+  border-color: #2196F3;
+  box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.08);
+}
 
-.input-area button {
-  padding: 12px 24px;
-  background: #2196F3;
-  color: white;
+.input-wrapper input {
+  flex: 1;
   border: none;
-  border-radius: 24px;
-  cursor: pointer;
+  outline: none;
+  padding: 14px 0;
+  font-size: 15px;
+  background: transparent;
+  color: #333;
+  min-width: 0;
 }
 
-.input-area button:disabled { background: #ccc; cursor: not-allowed; }
+.input-wrapper input::placeholder {
+  color: #bbb;
+}
+
+.input-wrapper input:disabled {
+  color: #999;
+  cursor: not-allowed;
+}
+
+.stop-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #f5f5f5;
+  border: 1px solid #e0e0e0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #666;
+  flex-shrink: 0;
+  transition: all 0.15s;
+}
+
+.stop-btn:hover {
+  background: #ffeeee;
+  border-color: #f44336;
+  color: #f44336;
+}
 
 @media (max-width: 768px) {
-  .input-area input { padding: 10px 14px; }
-  .input-area button { padding: 10px 16px; }
+  .input-area {
+    padding: 12px 16px;
+    padding-bottom: 24px;
+  }
+
+  .input-wrapper {
+    border-radius: 20px;
+    padding: 0 6px 0 16px;
+  }
+
+  .input-wrapper input {
+    padding: 12px 0;
+    font-size: 15px;
+  }
 }
 </style>
