@@ -187,7 +187,7 @@ function formatTime(isoString: string): string {
   width: 280px;
   background: white;
   border-right: 1px solid #e0e0e0;
-  z-index: 200;
+  z-index: 110;
   transition: left 0.3s;
   display: flex;
   flex-direction: column;
@@ -320,7 +320,7 @@ function formatTime(isoString: string): string {
   position: fixed;
   top: 16px;
   left: 16px;
-  z-index: 150;
+  z-index: 120;
   width: 40px;
   height: 40px;
   border-radius: 8px;
@@ -335,7 +335,7 @@ function formatTime(isoString: string): string {
   position: fixed;
   inset: 0;
   background: rgba(0,0,0,0.5);
-  z-index: 190;
+  z-index: 160;
 }
 
 @media (max-width: 768px) {
@@ -350,7 +350,7 @@ function formatTime(isoString: string): string {
   }
 
   .sessions-sidebar {
-    z-index: 200;
+    z-index: 170;
   }
 }
 
