@@ -107,6 +107,8 @@ function fallbackCopy(text: string) {
   padding: 12px 16px;
   border-radius: 12px;
   line-height: 1.6;
+  overflow-x: hidden;
+  word-wrap: break-word;
 }
 .message-actions {
   display: flex;

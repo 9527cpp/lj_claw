@@ -211,6 +211,7 @@ function formatTime(isoString: string): string {
   flex-direction: column;
   height: 100vh;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  overflow-x: hidden;
 }
 
 /* Sessions sidebar */
@@ -416,6 +417,8 @@ function formatTime(isoString: string): string {
   width: 100%;
   margin: 0 auto;
   padding: 24px;
+  box-sizing: border-box;
+  overflow-x: hidden;
 }
 
 @media (min-width: 769px) {
@@ -434,6 +437,7 @@ function formatTime(isoString: string): string {
 .messages {
   flex: 1;
   overflow-y: auto;
+  overflow-x: hidden;
   padding-bottom: 16px;
 }
 
