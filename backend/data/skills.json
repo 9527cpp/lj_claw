@@ -255,7 +255,7 @@
     {
       "id": "weather",
       "name": "Weather Skill",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "api_key": "your-key-here",
         "api_host": "devapi.qweather.com"

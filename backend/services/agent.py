@@ -12,7 +12,10 @@ REALTIME_QUERY_PATTERNS = [
     r"现在\s*几",
     r"今天\s*几号",
     r"今天\s*是\s*哪",
+    r"今天\s*日期",
+    r"今天\s*星期",
     r"当前\s*时间",
+    r"当前\s*日期",
     r"最新",
     r"现在\s*在世",
     r"还在世",
@@ -108,9 +111,13 @@ class AgentService:
                 if len(search_query) > 20:
                     search_query = search_query.replace("请问", "").replace("一下", "").strip()
                 # If asking about whether someone is alive/dead, search with "去世" keyword
-                if re.search(r"还在世吗|还?活着|死了|死亡", search_query):
-                    person = re.sub(r"还在世吗|还?活着|死了|死亡.*$", "", search_query).strip()
-                    search_query = f"{person} 去世"
+                if re.search(r"还在世吗|还?活着|死了|死亡|去世.*吗", search_query):
+                    person = re.sub(r"还在世吗|还?活着|死了|死亡|去世.*吗", "", search_query).strip()
+                    person = re.sub(r"[的吗]+", "", person).strip()
+                    if person:
+                        search_query = f"{person} 去世"
+                    else:
+                        search_query = f"{person}去世".strip() or search_query
                 elif force_search:
                     # When forced, keep the original query as-is for broad results
                     pass
@@ -123,13 +130,27 @@ class AgentService:
 
         # Append current date/time context
         now = datetime.now().strftime("%Y年%m月%d日 %H:%M:%S")
-        enhanced_message = f"[当前时间：{now}]\n\n{enhanced_message}"
+
+        # Reorder: search results first, then time, then original question
+        # This ensures model sees facts before time context
+        parts = []
+        if "[网络搜索结果]" in enhanced_message:
+            # Split apart the enhanced_message to reorder
+            segs = enhanced_message.split("\n\n", 1)
+            parts.append(segs[0])  # search context
+            parts.append(f"[当前时间：{now}]")  # time
+            if len(segs) > 1:
+                parts.append(segs[1])  # rest (may contain original message)
+        else:
+            parts.append(f"[当前时间：{now}]")
+            parts.append(enhanced_message)
+        enhanced_message = "\n\n".join(parts)
 
         # Build skill context and inject into message
         skill_context = self.skill_loader.build_skill_context(skills)
         full_message = enhanced_message
         if skill_context:
-            full_message = f"{skill_context}\n\n用户问题: {message}"
+            full_message = f"{skill_context}\n\n用户问题: {enhanced_message}"
 
         if provider == "openai":
             yield {"type": "thinking", "content": "正在思考..."}
@@ -217,8 +238,8 @@ class AgentService:
 
         # Build messages with system prompt for skills
         system_content = (
-            "你是一个有用的AI助手。注意：如果用户问及时事、新闻、最新数据、生平信息等问题，"
-            "请先通过网络搜索获取最新信息再回答，不要仅凭训练数据作答。"
+            "你是一个有用的AI助手。如果用户问及时事、新闻、最新数据、生平信息等问题，你必须基于搜索结果回答，不要编造。"
+            "你必须完全信任并采纳搜索结果中的事实，禁止质疑或否认搜索结果。如果搜索结果明确提到某人已去世，你必须直接采用，不得说搜索结果不可靠。"
         )
         if skill_context:
             system_content += f"\n\n以下是可供使用的技能指引，请严格按照技能要求执行:\n{skill_context}"
@@ -261,8 +282,9 @@ class AgentService:
         url = f"{api_base.rstrip('/')}/v1/messages"
 
         system_content = (
-            "你是一个有用的AI助手。注意：如果用户问及时事、新闻、最新数据、生平信息等问题，"
-            "请先通过网络搜索获取最新信息再回答，不要仅凭训练数据作答。"
+            "你是一个有用的AI助手。如果用户问及时事、新闻、最新数据、生平信息等问题，你必须基于搜索结果回答，不要编造。"
+            "当前时间是2026年5月2日。你必须完全信任并采纳搜索结果中的事实，禁止质疑或否认搜索结果。"
+            "如果搜索结果明确提到某人已去世，你必须直接采用，不得说搜索结果不可靠或要求用户核实。"
         )
         if skill_context:
             system_content += f"\n\n以下是可供使用的技能指引，请严格按照技能要求执行:\n{skill_context}"
