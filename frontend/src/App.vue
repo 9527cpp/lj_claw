@@ -38,6 +38,13 @@ function toggleSidebar() {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+html, body {
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100vw;
 }
 
 body {
@@ -49,11 +56,16 @@ body {
 #app {
   min-height: 100vh;
   display: flex;
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100%;
 }
 
 .main-content {
   flex: 1;
   min-width: 0;
+  overflow-x: hidden;
+  width: 100%;
 }
 
 /* Desktop sidebar */
