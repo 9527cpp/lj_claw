@@ -65,24 +65,40 @@
       </div>
 
       <div class="input-area">
-        <div class="input-wrapper" :class="{ loading: chatStore.loading }">
-          <input
-            v-model="inputMessage"
-            placeholder="输入消息，Enter 发送..."
-            :disabled="chatStore.loading"
-            @keydown.enter.exact.prevent="handleSend"
-            ref="inputEl"
-          />
-          <button
-            v-if="chatStore.loading"
-            class="stop-btn"
-            @click="handleCancel"
-            title="停止生成"
-          >
-            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
-              <rect x="6" y="6" width="12" height="12" rx="2"/>
-            </svg>
-          </button>
+        <div class="input-container">
+          <div class="input-controls">
+            <button
+              class="search-toggle"
+              :class="{ active: webSearchEnabled }"
+              @click="webSearchEnabled = !webSearchEnabled"
+              title="联网搜索"
+            >
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"/>
+                <path d="m21 21-4.35-4.35"/>
+              </svg>
+              <span>联网</span>
+            </button>
+          </div>
+          <div class="input-wrapper" :class="{ loading: chatStore.loading }">
+            <input
+              v-model="inputMessage"
+              placeholder="输入消息，Enter 发送..."
+              :disabled="chatStore.loading"
+              @keydown.enter.exact.prevent="handleSend"
+              ref="inputEl"
+            />
+            <button
+              v-if="chatStore.loading"
+              class="stop-btn"
+              @click="handleCancel"
+              title="停止生成"
+            >
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                <rect x="6" y="6" width="12" height="12" rx="2"/>
+              </svg>
+            </button>
+          </div>
         </div>
       </div>
     </main>
@@ -123,12 +139,14 @@ watch(() => chatStore.messages.length, async () => {
   scrollToBottom()
 })
 
+const webSearchEnabled = ref(false)
+
 async function handleSend() {
   const msg = inputMessage.value.trim()
   if (!msg || chatStore.loading) return
 
   inputMessage.value = ''
-  await chatStore.sendMessage(msg)
+  await chatStore.sendMessage(msg, undefined, webSearchEnabled.value)
 
   await nextTick()
   if (messagesEl.value) {
@@ -436,17 +454,61 @@ function formatTime(isoString: string): string {
   padding-right: 24px;
 }
 
-.input-wrapper {
+.input-container {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-width: 800px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.input-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-left: 4px;
+}
+
+.search-toggle {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 12px;
+  border-radius: 16px;
+  border: 1.5px solid #e0e0e0;
+  background: white;
+  color: #999;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.search-toggle:hover {
+  border-color: #2196F3;
+  color: #2196F3;
+}
+
+.search-toggle.active {
+  border-color: #2196F3;
+  background: #e3f2fd;
+  color: #1976D2;
+}
+
+.search-toggle svg {
+  flex-shrink: 0;
+}
+
+.input-wrapper {
   display: flex;
   align-items: center;
   background: white;
   border: 1.5px solid #e0e0e0;
   border-radius: 24px;
   padding: 0 8px 0 20px;
-  transition: border-color 0.2s;
-  max-width: 800px;
-  margin: 0 auto;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .input-wrapper:focus-within {
@@ -501,6 +563,10 @@ function formatTime(isoString: string): string {
     padding-bottom: 24px;
   }
 
+  .input-container {
+    gap: 8px;
+  }
+
   .input-wrapper {
     border-radius: 20px;
     padding: 0 6px 0 16px;
@@ -509,6 +575,15 @@ function formatTime(isoString: string): string {
   .input-wrapper input {
     padding: 12px 0;
     font-size: 15px;
+  }
+
+  .search-toggle {
+    padding: 4px 10px;
+    font-size: 12px;
+  }
+
+  .search-toggle span {
+    display: none;
   }
 }
 </style>

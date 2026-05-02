@@ -113,7 +113,7 @@ export const useChatStore = defineStore('chat', () => {
     }
   }
 
-  async function sendMessage(content: string, modelId?: string) {
+  async function sendMessage(content: string, modelId?: string, webSearch?: boolean) {
     cancel()
     abortController = new AbortController()
     loading.value = true
@@ -125,7 +125,12 @@ export const useChatStore = defineStore('chat', () => {
       const response = await fetch('/api/chat/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: content, model_id: modelId, session_id: activeSessionId.value }),
+        body: JSON.stringify({
+          message: content,
+          model_id: modelId,
+          session_id: activeSessionId.value,
+          web_search: webSearch ?? false,
+        }),
         signal: abortController.signal,
       })
 

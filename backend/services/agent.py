@@ -65,7 +65,8 @@ class AgentService:
         message: str,
         model_config: Dict[str, Any],
         skills: List[Dict[str, Any]],
-        history: List[Dict[str, str]]
+        history: List[Dict[str, str]],
+        force_search: bool = False,
     ) -> AsyncGenerator[Dict[str, Any], None]:
         provider = model_config.get("provider", "openai")
         api_base = model_config.get("api_base")
@@ -97,8 +98,8 @@ class AgentService:
             weather_text = f"查询失败: {weather_info.get('error')}"
             enhanced_message = f"{message}\n\n[天气信息]: {weather_text}"
 
-        # Web search for real-time / factual questions
-        if _needs_realtime_info(message):
+        # Web search: always search if force_search=True, otherwise check patterns
+        if force_search or _needs_realtime_info(message):
             yield {"type": "thinking", "content": "正在搜索最新信息..."}
             try:
                 # Build a targeted search query from the original message
@@ -110,6 +111,9 @@ class AgentService:
                 if re.search(r"还在世吗|还?活着|死了|死亡", search_query):
                     person = re.sub(r"还在世吗|还?活着|死了|死亡.*$", "", search_query).strip()
                     search_query = f"{person} 去世"
+                elif force_search:
+                    # When forced, keep the original query as-is for broad results
+                    pass
                 search_results = await self.search.search(search_query, num_results=5)
                 if search_results:
                     search_context = self._format_search_results(search_results)

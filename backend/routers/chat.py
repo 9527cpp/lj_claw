@@ -15,6 +15,7 @@ class ChatRequest(BaseModel):
     message: str
     model_id: Optional[str] = None
     session_id: Optional[str] = None
+    web_search: bool = False  # Enable web search for this message
 
 class CreateSessionRequest(BaseModel):
     name: Optional[str] = None
@@ -230,8 +231,9 @@ async def chat(request: ChatRequest):
             message=request.message,
             model_config=model_config,
             skills=enabled_skills,
-            history=history
-        ):
+            history=history,
+            force_search=request.web_search,
+        )::
             if chunk.get("type") == "text":
                 full_response += chunk.get("content", "")
             yield f"data: {json.dumps(chunk, ensure_ascii=False)}\n\n"
