@@ -125,7 +125,7 @@ body {
     position: fixed;
     inset: 0;
     background: rgba(0,0,0,0.5);
-    z-index: 150;
+    z-index: 195;
   }
 
   .sidebar {
@@ -135,7 +135,7 @@ body {
     bottom: 0;
     width: 200px;
     background: white;
-    z-index: 160;
+    z-index: 200;
     transition: left 0.3s;
   }
 
