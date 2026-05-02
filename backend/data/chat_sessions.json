@@ -4,8 +4,17 @@
       "id": "ed3206f4-6067-4af5-b7c3-3cf68279d426",
       "name": "新对话 2",
       "created_at": "2026-05-02T16:59:18.909111",
-      "updated_at": "2026-05-02T16:59:18.909111",
-      "messages": []
+      "updated_at": "2026-05-02T17:03:24.367757",
+      "messages": [
+        {
+          "role": "user",
+          "content": "你好"
+        },
+        {
+          "role": "assistant",
+          "content": "\n\n你好！有什么我可以帮助你的吗？😊\n\n我可以帮你：\n\n- 🌤️ 查询天气情况\n- 📅 提供各种信息\n- ❓ 回答问题\n\n请问你有什么需要？"
+        }
+      ]
     },
     {
       "id": "a252b97e-29ed-4cd2-b421-8c423533cc9e",
@@ -160,5 +169,5 @@
       ]
     }
   ],
-  "active_session": "ed3206f4-6067-4af5-b7c3-3cf68279d426"
+  "active_session": "a252b97e-29ed-4cd2-b421-8c423533cc9e"
 }

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>网站客服浮窗 Demo</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f5f5f5;
+      color: #333;
+      line-height: 1.6;
+    }
+    .demo-container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+    .demo-hero {
+      background: linear-gradient(135deg, #cc785c, #a9583e);
+      color: white;
+      padding: 60px 40px;
+      border-radius: 16px;
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    .demo-hero h1 { font-size: 32px; margin-bottom: 16px; }
+    .demo-hero p { font-size: 18px; opacity: 0.9; }
+    .demo-section {
+      background: white;
+      padding: 32px;
+      border-radius: 12px;
+      margin-bottom: 24px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .demo-section h2 {
+      font-size: 20px;
+      margin-bottom: 16px;
+      color: #141413;
+    }
+    .demo-section p {
+      color: #666;
+      margin-bottom: 16px;
+    }
+    .code-block {
+      background: #181715;
+      color: #faf9f5;
+      padding: 20px;
+      border-radius: 8px;
+      font-family: 'SF Mono', Monaco, monospace;
+      font-size: 13px;
+      overflow-x: auto;
+      margin-bottom: 16px;
+    }
+    .code-block .comment { color: #8e8b82; }
+    .code-block .tag { color: #cc785c; }
+    .code-block .attr { color: #5db8a6; }
+    .code-block .value { color: #e8a55a; }
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-top: 20px;
+    }
+    .feature-item {
+      background: #faf9f5;
+      padding: 16px;
+      border-radius: 8px;
+      border: 1px solid #e6dfd8;
+    }
+    .feature-item h3 { font-size: 14px; margin-bottom: 8px; color: #141413; }
+    .feature-item p { font-size: 13px; color: #6c6a64; margin: 0; }
+    .cta-btn {
+      display: inline-block;
+      background: #cc785c;
+      color: white;
+      padding: 12px 32px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 500;
+      margin-top: 16px;
+      transition: background 0.2s;
+    }
+    .cta-btn:hover { background: #a9583e; }
+    .note {
+      background: #fff8e6;
+      border: 1px solid #ffe8a0;
+      padding: 12px 16px;
+      border-radius: 6px;
+      font-size: 13px;
+      color: #8a6d00;
+      margin-top: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div class="demo-container">
+    <!-- Hero -->
+    <div class="demo-hero">
+      <h1>🛒 AI 客服浮窗</h1>
+      <p>一行代码接入 AI 客服机器人到你的网站</p>
+      <a href="/widget" class="cta-btn" target="_blank">→ 查看浮窗效果</a>
+    </div>
+
+    <!-- How it works -->
+    <div class="demo-section">
+      <h2>📋 如何使用（1分钟完成）</h2>
+      <p>在你的网站 HTML 的 <code>&lt;body&gt;</code> 标签末尾加入以下代码：</p>
+      <div class="code-block">
+<span class="comment">&lt;!-- 1. 先引入 React（如果网站没有） --&gt;</span>
+&lt;script src="https://unpkg.com/react@18/umd/react.production.min.js"&gt;&lt;/script&gt;
+&lt;script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"&gt;&lt;/script&gt;
+
+<span class="comment">&lt;!-- 2. 引入 lj_claw 客服浮窗 --&gt;</span>
+&lt;script&gt;<span class="attr">src</span>="https://<span class="value">your-domain.com</span>/lj-claw-widget.js"&gt;&lt;/script&gt;
+
+<span class="comment">&lt;!-- 3. 初始化浮窗 --&gt;</span>
+&lt;script&gt;
+  LjClawWidget.init({
+    <span class="attr">apiUrl</span>: <span class="value">'https://your-backend.com/api/chat/'</span>,
+    <span class="attr">botName</span>: <span class="value">'店小二'</span>,
+    <span class="attr">primaryColor</span>: <span class="value">'#cc785c'</span>,
+    <span class="attr">welcomeMessage</span>: <span class="value">'您好，请问有什么可以帮助您的？'</span>
+  })
+&lt;/script&gt;
+      </div>
+      <div class="note">
+        💡 注意：实际部署时需要把浮窗构建为独立的 JS 文件（预计开发时间：1天），目前可在 lj_claw 域名下直接访问 <a href="/widget">/widget</a> 查看效果。
+      </div>
+    </div>
+
+    <!-- Features -->
+    <div class="demo-section">
+      <h2>✨ 功能特点</h2>
+      <div class="feature-grid">
+        <div class="feature-item">
+          <h3>🤖 AI 智能回复</h3>
+          <p>基于大语言模型，理解用户问题并自动回复</p>
+        </div>
+        <div class="feature-item">
+          <h3>💬 拟人化对话</h3>
+          <p>流式输出，打字机效果，体验接近真人</p>
+        </div>
+        <div class="feature-item">
+          <h3>📱 移动端适配</h3>
+          <p>完美适配手机端，触摸操作流畅</p>
+        </div>
+        <div class="feature-item">
+          <h3>🎨 品牌定制</h3>
+          <p>自定义颜色、名称、欢迎语</p>
+        </div>
+        <div class="feature-item">
+          <h3>📊 消息统计</h3>
+          <p>后台记录对话数据，分析用户意图</p>
+        </div>
+        <div class="feature-item">
+          <h3>🔗 多网站支持</h3>
+          <p>一个后台接入多个网站，降低成本</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pricing -->
+    <div class="demo-section">
+      <h2>💰 定价方案</h2>
+      <div class="feature-grid">
+        <div class="feature-item">
+          <h3>免费版</h3>
+          <p>适合个人网站测试 · 每天100条对话</p>
+        </div>
+        <div class="feature-item">
+          <h3>专业版 ¥99/月</h3>
+          <p>适合中小企业 · 无限对话 + 自定义Skills</p>
+        </div>
+        <div class="feature-item">
+          <h3>企业版 ¥999/月</h3>
+          <p>适合电商/培训机构 · 多账号 + 优先响应</p>
+        </div>
+      </div>
+    </div>
+
+    <div style="text-align: center; color: #999; font-size: 13px; margin-top: 40px;">
+      咨询合作请加微信：lijun_tech
+    </div>
+  </div>
+</body>
+</html>
