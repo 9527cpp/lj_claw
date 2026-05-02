@@ -1,7 +1,7 @@
 """
 iLink (ClawBot) Router for lj_claw.
 
-Provides management endpoints for the iLink bridge service.
+Provides management endpoints for the iLink bridge service including QR code login.
 """
 from pathlib import Path
 
@@ -18,6 +18,12 @@ from services.ilink_bridge import (
     SESSIONS_PATH,
     DEFAULT_WS_ROOT,
 )
+from services.ilink_client import (
+    ILinkClient,
+    start_qr_login,
+    check_qr_status,
+    get_qr_state,
+)
 
 router = APIRouter(prefix="/api/ilink", tags=["ilink"])
 
@@ -29,9 +35,11 @@ class ILinkStatusResponse(BaseModel):
     sessions_file_exists: bool
 
 
-class ILinkLoginResponse(BaseModel):
-    message: str
-    token_path: str
+class ILinkQRStatusResponse(BaseModel):
+    qrcode_id: Optional[str]
+    login_url: Optional[str]
+    status: Optional[str]
+    has_token: bool
 
 
 class ILinkSessionResponse(BaseModel):
@@ -58,6 +66,64 @@ def get_status():
         state_dir=str(STATE_DIR),
         sessions_file_exists=SESSIONS_PATH.exists(),
     )
+
+
+@router.get("/qr", response_model=ILinkQRStatusResponse)
+def get_qr():
+    """
+    Get current QR code login state.
+    If no QR is in progress, returns status='no_qr'.
+    Frontend should poll this endpoint every 2-3 seconds.
+    """
+    state = asyncio.run(get_qr_state())
+    return ILinkQRStatusResponse(
+        qrcode_id=state.get("qrcode_id"),
+        login_url=state.get("login_url"),
+        status=state.get("status"),
+        has_token=state.get("has_token", False),
+    )
+
+
+@router.post("/qr/start")
+async def qr_start():
+    """
+    Start QR code login flow.
+    Returns the QR code content (login URL) for the frontend to render.
+    """
+    client = ILinkClient()
+    try:
+        result = await start_qr_login(client)
+        return {
+            "status": "pending",
+            "qrcode_id": result["qrcode_id"],
+            "login_url": result["login_url"],
+            "message": "QR code generated. Please scan with WeChat.",
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    finally:
+        await client.aclose()
+
+
+@router.get("/qr/status")
+async def qr_status():
+    """
+    Check QR code scan status.
+    Returns current status: pending, confirmed, expired.
+    When status='confirmed', login is complete and token is saved.
+    """
+    client = ILinkClient()
+    try:
+        result = await check_qr_status(client)
+        return {
+            "status": result.get("status"),
+            "detail": result.get("detail", {}),
+            "message": "Login confirmed" if result.get("status") == "confirmed" else "Waiting for scan...",
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    finally:
+        await client.aclose()
 
 
 @router.post("/start")

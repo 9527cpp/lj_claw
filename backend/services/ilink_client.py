@@ -19,6 +19,82 @@ BASE_URL_DEFAULT = "https://ilinkai.weixin.qq.com"
 CHANNEL_VERSION = "1.0.2"
 LONGPOLL_TIMEOUT = 45.0  # server holds 35s, give HTTP a bit more
 
+# Global state for QR code login flow (used by router + login function)
+_qr_state: dict[str, Any] = {
+    "qrcode_id": None,
+    "login_url": None,
+    "status": None,  # None, "pending", "confirmed", "expired", "cancelled"
+    "bot_token": None,
+    "baseurl": None,
+}
+
+
+async def start_qr_login(client: ILinkClient) -> dict:
+    """Initiate QR login, return qrcode data for frontend."""
+    global _qr_state
+    qr = await client.get_qrcode()
+    qrcode_id = qr.get("qrcode") or qr.get("qrcode_str")
+    login_url = qr.get("qrcode_img_content") or qr.get("qrcode_img")
+    if not qrcode_id:
+        raise RuntimeError(f"no qrcode in response: {qr}")
+
+    _qr_state["qrcode_id"] = qrcode_id
+    _qr_state["login_url"] = login_url or qrcode_id
+    _qr_state["status"] = "pending"
+    _qr_state["bot_token"] = None
+    _qr_state["baseurl"] = None
+
+    return {
+        "qrcode_id": qrcode_id,
+        "login_url": _qr_state["login_url"],
+        "status": "pending",
+    }
+
+
+async def check_qr_status(client: ILinkClient) -> dict:
+    """Check current QR code scan status (call repeatedly from frontend)."""
+    global _qr_state
+    if not _qr_state["qrcode_id"]:
+        return {"status": "no_qr", "message": "No QR code in progress"}
+
+    status = await client.get_qrcode_status(_qr_state["qrcode_id"])
+    st = status.get("status")
+
+    if st == "confirmed" and status.get("bot_token"):
+        _qr_state["status"] = "confirmed"
+        _qr_state["bot_token"] = status["bot_token"]
+        _qr_state["baseurl"] = status.get("baseurl", "")
+        # Persist token
+        TOKEN_PATH.parent.mkdir(parents=True, exist_ok=True)
+        TOKEN_PATH.write_text(
+            json.dumps(
+                {"bot_token": _qr_state["bot_token"], "baseurl": _qr_state["baseurl"]},
+                ensure_ascii=False,
+            )
+        )
+        client.bot_token = _qr_state["bot_token"]
+        if _qr_state["baseurl"]:
+            client.base_url = _qr_state["baseurl"].rstrip("/")
+
+    elif st in ("expired", "timeout", "cancelled"):
+        _qr_state["status"] = "expired"
+
+    return {
+        "status": _qr_state["status"],
+        "detail": status,
+    }
+
+
+async def get_qr_state() -> dict:
+    """Return current QR login state (for frontend polling)."""
+    return {
+        "qrcode_id": _qr_state.get("qrcode_id"),
+        "login_url": _qr_state.get("login_url"),
+        "status": _qr_state.get("status"),
+        "has_token": bool(_qr_state.get("bot_token")),
+    }
+
+
 
 def _uin_header() -> str:
     """random uint32 → decimal string → base64 (matches openclaw-weixin 1.0.2 source)"""

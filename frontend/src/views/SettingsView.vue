@@ -82,7 +82,36 @@
           />
         </div>
       </section>
+
+      <section class="ilink-section">
+        <h2>微信连接 (ClawBot / iLink)</h2>
+        <div class="ilink-card">
+          <div class="ilink-status">
+            <div class="status-row">
+              <span class="status-label">Bridge 状态</span>
+              <span class="status-value" :class="{ running: bridgeRunning }">
+                {{ bridgeRunning ? '运行中' : '未运行' }}
+              </span>
+            </div>
+            <div class="status-row">
+              <span class="status-label">登录状态</span>
+              <span class="status-value" :class="{ connected: hasToken }">
+                {{ hasToken ? '已登录' : '未登录' }}
+              </span>
+            </div>
+          </div>
+          <button class="ilink-btn" @click="showQRModal = true">
+            {{ hasToken ? '重新扫码登录' : '扫码登录' }}
+          </button>
+        </div>
+      </section>
     </main>
+
+    <ILinkQRModal
+      :visible="showQRModal"
+      @close="showQRModal = false"
+      @login-success="onLoginSuccess"
+    />
 
     <ModelForm
       v-if="showAddForm || editingModel"
@@ -100,6 +129,7 @@ import { useSkillsStore } from '@/stores/skills'
 import ModelCard from '@/components/ModelCard.vue'
 import ModelForm from '@/components/ModelForm.vue'
 import SkillToggle from '@/components/SkillToggle.vue'
+import ILinkQRModal from '@/components/ILinkQRModal.vue'
 import type { ModelConfig } from '@/stores/models'
 import type { ImportSource } from '@/stores/skills'
 
@@ -112,6 +142,9 @@ const editingModel = ref<ModelConfig | undefined>()
 const skillImportSource = ref('')
 const importing = ref(false)
 const importResult = ref<{ success: boolean; error?: string } | null>(null)
+const showQRModal = ref(false)
+const bridgeRunning = ref(false)
+const hasToken = ref(false)
 
 const importedSkillIds = computed(() => {
   const ids = new Set<string>()
@@ -134,13 +167,34 @@ onMounted(async () => {
     await Promise.all([
       modelsStore.fetchModels(),
       skillsStore.fetchSkills(),
-      skillsStore.fetchImportSources()
+      skillsStore.fetchImportSources(),
+      fetchILinkStatus(),
     ])
   } finally {
     loading.value = false
     skillsLoading.value = false
   }
 })
+
+async function fetchILinkStatus() {
+  try {
+    const [statusRes, tokenRes] = await Promise.all([
+      fetch('/api/ilink/status'),
+      fetch('/api/ilink/token'),
+    ])
+    const statusData = await statusRes.json()
+    const tokenData = await tokenRes.json()
+    bridgeRunning.value = statusData.running || false
+    hasToken.value = tokenData.exists || false
+  } catch {
+    // ignore
+  }
+}
+
+function onLoginSuccess() {
+  hasToken.value = true
+  bridgeRunning.value = true
+}
 
 function openEditForm(model: ModelConfig) {
   editingModel.value = model
@@ -398,6 +452,57 @@ h2 { margin-bottom: 16px; }
   padding: 4px;
 }
 
+.ilink-section {
+  border-top: 1px solid #e0e0e0;
+  padding-top: 24px;
+  margin-top: 8px;
+}
+.ilink-section h2 {
+  margin-bottom: 16px;
+}
+.ilink-card {
+  background: white;
+  border-radius: 8px;
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 400px;
+}
+.ilink-status {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.status-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.status-label {
+  font-size: 13px;
+  color: #666;
+  width: 60px;
+}
+.status-value {
+  font-size: 13px;
+  font-weight: 500;
+  color: #999;
+}
+.status-value.running { color: #4CAF50; }
+.status-value.connected { color: #07C160; }
+.ilink-btn {
+  padding: 8px 20px;
+  background: #07C160;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.ilink-btn:hover { background: #06a050; }
+
 @media (max-width: 768px) {
   .content { padding: 16px; }
   .skill-import { flex-direction: column; }
@@ -406,5 +511,5 @@ h2 { margin-bottom: 16px; }
   .import-sources { padding: 12px; }
   .source-header { flex-direction: column; align-items: flex-start; gap: 8px; }
   .unimport-btn { width: 100%; }
-}
-</style>
+  .ilink-card { flex-direction: column; align-items: flex-start; gap: 12px; }
+}</style>
