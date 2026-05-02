@@ -1,5 +1,6 @@
 from .models import router as models_router
 from .skills import router as skills_router
 from .chat import router as chat_router
+from .ilink import router as ilink_router
 
-__all__ = ["models_router", "skills_router", "chat_router"]
+__all__ = ["models_router", "skills_router", "chat_router", "ilink_router"]
