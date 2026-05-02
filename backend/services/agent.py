@@ -15,9 +15,12 @@ REALTIME_QUERY_PATTERNS = [
     r"当前\s*时间",
     r"最新",
     r"现在\s*在世",
-    r"去世了",
     r"还在世",
+    r"去世",
+    r"去世了",
     r"去世.*吗",
+    r"去世.*吗",
+    r"还在世吗",
     r"有没有.*最新",
     r"最近.*怎么了",
     r"今天.*新闻",
@@ -29,6 +32,10 @@ REALTIME_QUERY_PATTERNS = [
     r"哪一年.*出生",
     r"今年.*多大",
     r"谁是.*现在",
+    r"还?活着",
+    r"死了",
+    r"死亡",
+    r"去世.*吗",
 ]
 
 
@@ -94,7 +101,16 @@ class AgentService:
         if _needs_realtime_info(message):
             yield {"type": "thinking", "content": "正在搜索最新信息..."}
             try:
-                search_results = await self.search.search(message, num_results=5)
+                # Build a targeted search query from the original message
+                search_query = message.strip()
+                # Transform conversational/factual queries into better search terms
+                if len(search_query) > 20:
+                    search_query = search_query.replace("请问", "").replace("一下", "").strip()
+                # If asking about whether someone is alive/dead, search with "去世" keyword
+                if re.search(r"还在世吗|还?活着|死了|死亡", search_query):
+                    person = re.sub(r"还在世吗|还?活着|死了|死亡.*$", "", search_query).strip()
+                    search_query = f"{person} 去世"
+                search_results = await self.search.search(search_query, num_results=5)
                 if search_results:
                     search_context = self._format_search_results(search_results)
                     enhanced_message = f"{search_context}\n\n{enhanced_message}"
