@@ -71,47 +71,75 @@ async function saveConfig() {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  padding: 12px 16px;
+  padding: 14px 18px;
   background: white;
   border-radius: 8px;
   margin-bottom: 8px;
+  border: 1px solid #e6dfd8;
+  transition: border-color 0.2s;
+}
+.skill-toggle:hover {
+  border-color: #d8d0c4;
 }
 .skill-info {
   display: flex;
   flex-direction: column;
+  gap: 10px;
+}
+.skill-name {
+  font-size: 14px;
+  font-weight: 500;
+  color: #141413;
+}
+.skill-config {
+  display: flex;
+  flex-direction: column;
   gap: 8px;
 }
-.skill-name { font-weight: 500; }
-.skill-config { display: flex; flex-direction: column; gap: 8px; }
-.config-row { display: flex; align-items: center; gap: 8px; }
+.config-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
 .config-label {
   font-size: 12px;
-  color: #666;
-  min-width: 50px;
+  color: #6c6a64;
+  min-width: 52px;
 }
 .config-input {
   padding: 8px 12px;
-  border: 1px solid #e0e0e0;
-  border-radius: 4px;
-  font-size: 14px;
+  border: 1px solid #e6dfd8;
+  border-radius: 5px;
+  font-size: 13px;
   width: 240px;
+  background: #faf9f5;
+  color: #141413;
 }
 .config-input:focus {
   outline: none;
-  border-color: #2196F3;
+  border-color: #cc785c;
 }
+.config-input::placeholder {
+  color: #8e8b82;
+}
+
+/* Toggle Switch */
 .switch {
   position: relative;
-  width: 48px;
+  width: 44px;
   height: 24px;
   flex-shrink: 0;
 }
-.switch input { opacity: 0; width: 0; height: 0; }
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
 .slider {
   position: absolute;
   cursor: pointer;
   inset: 0;
-  background: #ccc;
+  background: #d8d0c4;
   border-radius: 24px;
   transition: 0.3s;
 }
@@ -126,6 +154,10 @@ async function saveConfig() {
   border-radius: 50%;
   transition: 0.3s;
 }
-input:checked + .slider { background: #4CAF50; }
-input:checked + .slider::before { transform: translateX(24px); }
+input:checked + .slider {
+  background: #5db8a6;
+}
+input:checked + .slider::before {
+  transform: translateX(20px);
+}
 </style>

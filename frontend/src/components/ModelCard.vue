@@ -5,13 +5,13 @@
       <span class="provider">{{ model.provider }}</span>
     </div>
     <div class="model-body">
-      <p><strong>API Base:</strong> {{ model.api_base }}</p>
-      <p><strong>API Key:</strong> {{ maskedKey }}</p>
+      <p><strong>API Base:</strong> <span class="mono">{{ model.api_base }}</span></p>
+      <p><strong>API Key:</strong> <span class="mono">{{ maskedKey }}</span></p>
     </div>
     <div class="model-actions">
-      <button @click="$emit('edit', model)">编辑</button>
-      <button @click="$emit('delete', model.id)">删除</button>
-      <button v-if="!isActive" @click="$emit('activate', model.id)">激活</button>
+      <button class="edit-btn" @click="$emit('edit', model)">编辑</button>
+      <button class="delete-btn" @click="$emit('delete', model.id)">删除</button>
+      <button v-if="!isActive" class="activate-btn" @click="$emit('activate', model.id)">激活</button>
       <span v-else class="active-badge">使用中</span>
     </div>
   </div>
@@ -42,53 +42,99 @@ const maskedKey = computed(() => {
 <style scoped>
 .model-card {
   background: white;
-  border-radius: 8px;
-  padding: 16px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  border-radius: 10px;
+  padding: 18px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  border: 1px solid #e6dfd8;
+  transition: box-shadow 0.2s, border-color 0.2s;
+}
+.model-card:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
 }
 .model-card.active {
-  border: 2px solid #4CAF50;
+  border: 2px solid #cc785c;
 }
 .model-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 12px;
+  margin-bottom: 14px;
+}
+.model-header h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #141413;
 }
 .provider {
-  background: #e0e0e0;
-  padding: 2px 8px;
+  background: #f5f0e8;
+  color: #6c6a64;
+  padding: 3px 10px;
   border-radius: 4px;
-  font-size: 12px;
+  font-size: 11px;
+  font-weight: 500;
+}
+.model-body {
+  margin-bottom: 14px;
 }
 .model-body p {
-  margin: 4px 0;
-  font-size: 14px;
-  color: #666;
+  margin: 6px 0;
+  font-size: 13px;
+  color: #6c6a64;
+}
+.model-body strong {
+  color: #3d3d3a;
+  font-weight: 500;
+}
+.mono {
+  font-family: 'SF Mono', 'Monaco', 'Inconsolata', monospace;
+  font-size: 12px;
+  color: #3d3d3a;
 }
 .model-actions {
-  margin-top: 12px;
+  margin-top: 14px;
   display: flex;
   gap: 8px;
+  align-items: center;
 }
 button {
-  padding: 6px 12px;
+  padding: 7px 14px;
   border: none;
-  border-radius: 4px;
+  border-radius: 5px;
   cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.2s;
 }
-button:first-child {
-  background: #2196F3;
+.edit-btn {
+  background: #f5f0e8;
+  color: #3d3d3a;
+  border: 1px solid #e6dfd8;
+}
+.edit-btn:hover {
+  background: #e8e0d2;
+}
+.delete-btn {
+  background: #faf9f5;
+  color: #c64545;
+  border: 1px solid #c64545;
+}
+.delete-btn:hover {
+  background: #c64545;
   color: white;
 }
-button:nth-child(2) {
-  background: #f44336;
+.activate-btn {
+  background: #cc785c;
   color: white;
+}
+.activate-btn:hover {
+  background: #a9583e;
 }
 .active-badge {
-  background: #4CAF50;
+  background: #5db8a6;
   color: white;
-  padding: 6px 12px;
-  border-radius: 4px;
+  padding: 7px 14px;
+  border-radius: 5px;
+  font-size: 13px;
+  font-weight: 500;
 }
 </style>

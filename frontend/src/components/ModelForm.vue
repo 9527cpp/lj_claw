@@ -27,8 +27,8 @@
           <input v-model="form.api_key" type="password" placeholder="sk-..." required />
         </div>
         <div class="form-actions">
-          <button type="button" @click="$emit('close')">取消</button>
-          <button type="submit">{{ editingModel ? '保存' : '添加' }}</button>
+          <button type="button" class="cancel-btn" @click="$emit('close')">取消</button>
+          <button type="submit" class="submit-btn">{{ editingModel ? '保存' : '添加' }}</button>
         </div>
       </form>
     </div>
@@ -65,46 +65,100 @@ function handleSubmit() {
 .model-form-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.5);
+  background: rgba(20, 20, 19, 0.6);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 100;
+  z-index: 1000;
+  backdrop-filter: blur(2px);
 }
 .model-form {
-  background: white;
-  padding: 24px;
-  border-radius: 8px;
-  width: 400px;
+  background: #faf9f5;
+  padding: 28px;
+  border-radius: 12px;
+  width: 420px;
+  max-width: 95vw;
+  border: 1px solid #e6dfd8;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.15);
 }
-h2 { margin-bottom: 16px; }
-.form-group { margin-bottom: 12px; }
-.form-group label { display: block; margin-bottom: 4px; font-weight: 500; }
-.form-group input, .form-group select {
+h2 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #141413;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e6dfd8;
+}
+.form-group {
+  margin-bottom: 16px;
+}
+.form-group label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #3d3d3a;
+}
+.form-group input,
+.form-group select {
   width: 100%;
-  padding: 8px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  padding: 10px 14px;
+  border: 1px solid #e6dfd8;
+  border-radius: 6px;
+  font-size: 14px;
+  background: white;
+  color: #141413;
+  transition: border-color 0.2s;
+}
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #cc785c;
+}
+.form-group input:disabled {
+  background: #f5f0e8;
+  color: #6c6a64;
+}
+.form-group input::placeholder {
+  color: #8e8b82;
+}
+.form-group select {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236c6a64' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 32px;
 }
 .form-actions {
   display: flex;
-  gap: 8px;
+  gap: 10px;
   justify-content: flex-end;
-  margin-top: 16px;
+  margin-top: 24px;
 }
 .form-actions button {
-  padding: 8px 16px;
+  padding: 10px 20px;
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
   cursor: pointer;
+  transition: all 0.2s;
 }
-.form-actions button[type="submit"] {
-  background: #4CAF50;
+.cancel-btn {
+  background: #f5f0e8;
+  color: #6c6a64;
+  border: 1px solid #e6dfd8;
+}
+.cancel-btn:hover {
+  background: #e8e0d2;
+  color: #3d3d3a;
+}
+.submit-btn {
+  background: #cc785c;
   color: white;
 }
-
-@media (max-width: 768px) {
-  .model-form { width: 95%; padding: 16px; }
-  .form-group input, .form-group select { font-size: 16px; }
+.submit-btn:hover {
+  background: #a9583e;
 }
 </style>

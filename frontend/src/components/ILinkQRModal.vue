@@ -255,79 +255,91 @@ async function fetchQRState() {
 .ilink-qr-modal {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(20, 20, 19, 0.65);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 1000;
+  backdrop-filter: blur(3px);
 }
 
 .qr-dialog {
-  background: white;
-  border-radius: 12px;
-  width: 360px;
+  background: #faf9f5;
+  border-radius: 14px;
+  width: 380px;
   max-width: 90vw;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
   overflow: hidden;
+  border: 1px solid #e6dfd8;
 }
 
 .qr-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px 20px;
-  border-bottom: 1px solid #eee;
+  padding: 18px 24px;
+  border-bottom: 1px solid #e6dfd8;
+  background: white;
 }
 
 .qr-header h3 {
   font-size: 16px;
   font-weight: 600;
+  color: #141413;
   margin: 0;
 }
 
 .close-btn {
   background: none;
   border: none;
-  font-size: 24px;
-  color: #999;
+  font-size: 26px;
+  color: #8e8b82;
   cursor: pointer;
   padding: 0;
   line-height: 1;
+  transition: color 0.2s;
 }
 
 .close-btn:hover {
-  color: #333;
+  color: #3d3d3a;
 }
 
 .qr-body {
-  padding: 24px 20px;
-  min-height: 280px;
+  padding: 28px 24px;
+  min-height: 300px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  background: #faf9f5;
 }
 
 .qr-start {
   text-align: center;
+  padding: 20px 0;
 }
 
 .qr-start p {
-  color: #666;
-  margin-bottom: 16px;
+  color: #6c6a64;
+  font-size: 14px;
+  margin-bottom: 20px;
+  line-height: 1.5;
 }
 
 .scan-btn {
-  padding: 12px 32px;
+  padding: 12px 36px;
   background: #07C160;
   color: white;
   border: none;
-  border-radius: 6px;
-  font-size: 15px;
+  border-radius: 7px;
+  font-size: 14px;
+  font-weight: 500;
   cursor: pointer;
+  transition: background 0.2s;
 }
-
+.scan-btn:hover { background: #06a050; }
 .scan-btn:disabled {
-  background: #ccc;
+  background: #e6dfd8;
+  color: #8e8b82;
   cursor: not-allowed;
 }
 
@@ -339,13 +351,13 @@ async function fetchQRState() {
 }
 
 .spinner {
-  width: 40px;
-  height: 40px;
-  border: 3px solid #eee;
+  width: 42px;
+  height: 42px;
+  border: 3px solid #ebe6df;
   border-top-color: #07C160;
   border-radius: 50%;
   animation: spin 1s linear infinite;
-  margin-bottom: 16px;
+  margin-bottom: 18px;
 }
 
 @keyframes spin {
@@ -361,10 +373,11 @@ async function fetchQRState() {
 
 .qr-image-wrapper {
   background: white;
-  padding: 12px;
-  border: 1px solid #eee;
-  border-radius: 8px;
-  margin-bottom: 12px;
+  padding: 14px;
+  border: 1px solid #e6dfd8;
+  border-radius: 10px;
+  margin-bottom: 14px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
 
 .qr-image {
@@ -379,19 +392,19 @@ async function fetchQRState() {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #999;
+  color: #8e8b82;
 }
 
 .qr-ascii {
-  font-family: monospace;
-  font-size: 10px;
+  font-family: 'SF Mono', 'Monaco', monospace;
+  font-size: 9px;
   white-space: pre;
-  color: #333;
+  color: #3d3d3a;
 }
 
 .qr-hint {
-  color: #666;
-  font-size: 14px;
+  color: #6c6a64;
+  font-size: 13px;
   margin-bottom: 8px;
 }
 
@@ -401,7 +414,8 @@ async function fetchQRState() {
   gap: 6px;
   color: #07C160;
   font-size: 13px;
-  margin-bottom: 12px;
+  font-weight: 500;
+  margin-bottom: 14px;
 }
 
 .status-dot {
@@ -419,14 +433,18 @@ async function fetchQRState() {
 
 .refresh-btn {
   padding: 8px 20px;
-  background: #f5f5f5;
-  color: #666;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  background: #f5f0e8;
+  color: #6c6a64;
+  border: 1px solid #e6dfd8;
+  border-radius: 5px;
   font-size: 13px;
   cursor: pointer;
+  transition: all 0.2s;
 }
-
+.refresh-btn:hover {
+  background: #e8e0d2;
+  color: #3d3d3a;
+}
 .refresh-btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
@@ -436,64 +454,69 @@ async function fetchQRState() {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px;
+  padding: 24px;
 }
 
 .success-icon {
-  width: 60px;
-  height: 60px;
-  background: #07C160;
+  width: 64px;
+  height: 64px;
+  background: #5db8a6;
   color: white;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 32px;
-  margin-bottom: 16px;
+  margin-bottom: 18px;
 }
 
 .qr-success p {
   font-size: 16px;
-  color: #333;
+  font-weight: 500;
+  color: #141413;
 }
 
 .success-detail {
-  color: #999 !important;
+  color: #6c6a64 !important;
   font-size: 13px !important;
   margin-top: 8px;
+  font-weight: 400 !important;
 }
 
 .qr-expired {
   text-align: center;
-  padding: 20px;
+  padding: 24px;
 }
 
 .qr-expired p {
-  color: #f44336;
-  margin-bottom: 12px;
+  color: #c64545;
+  font-size: 14px;
+  margin-bottom: 14px;
 }
 
 .qr-error {
   text-align: center;
-  padding: 20px;
+  padding: 24px;
 }
 
 .qr-error p {
-  color: #f44336;
-  margin-bottom: 12px;
+  color: #c64545;
+  font-size: 14px;
+  margin-bottom: 14px;
 }
 
 .qr-footer {
-  padding: 16px 20px;
-  border-top: 1px solid #eee;
+  padding: 16px 24px;
+  border-top: 1px solid #e6dfd8;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  background: white;
 }
 
 .bridge-status {
   font-size: 13px;
-  color: #666;
+  color: #6c6a64;
 }
 
 .actions {
@@ -502,22 +525,26 @@ async function fetchQRState() {
 }
 
 .start-btn, .stop-btn {
-  padding: 6px 16px;
+  padding: 8px 18px;
   border: none;
-  border-radius: 4px;
+  border-radius: 5px;
   font-size: 13px;
+  font-weight: 500;
   cursor: pointer;
+  transition: all 0.2s;
 }
 
 .start-btn {
   background: #07C160;
   color: white;
 }
+.start-btn:hover { background: #06a050; }
 
 .stop-btn {
-  background: #f44336;
+  background: #c64545;
   color: white;
 }
+.stop-btn:hover { background: #a33a3a; }
 
 .start-btn:disabled, .stop-btn:disabled {
   opacity: 0.5;
