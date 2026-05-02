@@ -129,15 +129,15 @@ function fallbackCopy(text: string) {
   transition: background-color 0.15s, color 0.15s;
 }
 .user .action-btn {
-  background: rgba(255,255,255,0.15);
-  color: rgba(255,255,255,0.75);
+  background: #f0f0f0;
+  color: #666;
 }
 .user .action-btn:hover {
-  background: rgba(255,255,255,0.28);
-  color: white;
+  background: #e0e0e0;
+  color: #333;
 }
 .user .action-btn.repeating {
-  background: rgba(255,255,255,0.28);
+  background: #cc785c;
   color: white;
 }
 .assistant .action-btn {
