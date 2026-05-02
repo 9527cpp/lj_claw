@@ -233,7 +233,7 @@ async def chat(request: ChatRequest):
             skills=enabled_skills,
             history=history,
             force_search=request.web_search,
-        )::
+        ):
             if chunk.get("type") == "text":
                 full_response += chunk.get("content", "")
             yield f"data: {json.dumps(chunk, ensure_ascii=False)}\n\n"
