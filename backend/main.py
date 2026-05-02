@@ -4,7 +4,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from routers import models_router, skills_router, chat_router, ilink_router
+from routers import models_router, skills_router, chat_router, ilink_router, widget_router
 from services.ilink_bridge import start_bridge, stop_bridge, TOKEN_PATH
 from services.weather import WeatherService, CITY_LIST_FILE
 
@@ -51,6 +51,7 @@ app.include_router(ilink_router)
 app.include_router(models_router, prefix="/api/models", tags=["models"])
 app.include_router(skills_router, prefix="/api/skills", tags=["skills"])
 app.include_router(chat_router, prefix="/api/chat", tags=["chat"])
+app.include_router(widget_router, prefix="/api/widget", tags=["widget"])
 
 
 @app.get("/api/health")

@@ -14,6 +14,7 @@
       <nav class="sidebar-nav">
         <router-link to="/settings" class="sidebar-link" @click="sidebarOpen = false">Settings</router-link>
         <router-link to="/chat" class="sidebar-link" @click="sidebarOpen = false">Chat</router-link>
+        <router-link to="/widget-settings" class="sidebar-link" @click="sidebarOpen = false">网站接入</router-link>
       </nav>
     </aside>
 
