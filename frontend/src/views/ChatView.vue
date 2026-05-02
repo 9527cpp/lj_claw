@@ -233,19 +233,16 @@ function formatTime(isoString: string): string {
 
 @media (min-width: 769px) {
   .sessions-sidebar {
+    left: 0;
+    z-index: 80;
+  }
+
+  .mobile-sessions-btn {
     display: none;
   }
-}
 
-/* Mobile sessions sidebar */
-@media (max-width: 768px) {
-  .sessions-sidebar {
-    left: -280px;
-    z-index: 170;
-  }
-
-  .sessions-sidebar.open {
-    left: 0;
+  .overlay {
+    display: none;
   }
 }
 
@@ -396,7 +393,12 @@ function formatTime(isoString: string): string {
   }
 
   .sessions-sidebar {
+    left: -280px;
     z-index: 170;
+  }
+
+  .sessions-sidebar.open {
+    left: 0;
   }
 }
 
