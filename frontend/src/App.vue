@@ -66,7 +66,7 @@ body {
     left: 0;
     top: 0;
     bottom: 0;
-    z-index: 100;
+    z-index: 300;
   }
 
   .main-content {
@@ -135,7 +135,7 @@ body {
     bottom: 0;
     width: 200px;
     background: white;
-    z-index: 200;
+    z-index: 300;
     transition: left 0.3s;
   }
 
