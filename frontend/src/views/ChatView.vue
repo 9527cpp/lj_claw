@@ -233,6 +233,18 @@ function formatTime(isoString: string): string {
 
 @media (min-width: 769px) {
   .sessions-sidebar {
+    display: none;
+  }
+}
+
+/* Mobile sessions sidebar */
+@media (max-width: 768px) {
+  .sessions-sidebar {
+    left: -280px;
+    z-index: 170;
+  }
+
+  .sessions-sidebar.open {
     left: 0;
   }
 }
