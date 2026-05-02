@@ -5,7 +5,8 @@
       <button
         v-if="message.role === 'user'"
         class="action-btn repeat-btn"
-        @click="$emit('repeat', message.content)"
+        :class="{ repeating: isRepeating }"
+        @click="handleRepeat"
         title="重新发送"
       >
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -38,13 +39,20 @@ import { marked } from 'marked'
 import type { Message } from '@/stores/chat'
 
 const props = defineProps<{ message: Message }>()
-defineEmits<{ (e: 'repeat', content: string): void }>()
+const emit = defineEmits<{ (e: 'repeat', content: string): void }>()
 
 const copied = ref(false)
+const isRepeating = ref(false)
 
 const renderedContent = computed(() => {
   return marked.parse(props.message.content)
 })
+
+function handleRepeat() {
+  isRepeating.value = true
+  emit('repeat', props.message.content)
+  setTimeout(() => { isRepeating.value = false }, 1000)
+}
 
 function copyMessage() {
   const text = props.message.content
@@ -121,11 +129,16 @@ function fallbackCopy(text: string) {
   transition: background-color 0.15s, color 0.15s;
 }
 .user .action-btn {
-  background: rgba(255,255,255,0.2);
-  color: white;
+  background: rgba(255,255,255,0.15);
+  color: rgba(255,255,255,0.75);
 }
 .user .action-btn:hover {
-  background: rgba(255,255,255,0.35);
+  background: rgba(255,255,255,0.28);
+  color: white;
+}
+.user .action-btn.repeating {
+  background: rgba(255,255,255,0.28);
+  color: white;
 }
 .assistant .action-btn {
   background: #f0f0f0;
