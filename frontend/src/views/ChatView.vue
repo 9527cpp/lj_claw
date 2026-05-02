@@ -210,6 +210,7 @@ function formatTime(isoString: string): string {
   display: flex;
   flex-direction: column;
   height: 100vh;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 /* Sessions sidebar */
@@ -219,8 +220,8 @@ function formatTime(isoString: string): string {
   top: 0;
   bottom: 0;
   width: 280px;
-  background: white;
-  border-right: 1px solid #e0e0e0;
+  background: #faf9f5;
+  border-right: 1px solid #e6dfd8;
   z-index: 110;
   transition: left 0.3s;
   display: flex;
@@ -233,7 +234,7 @@ function formatTime(isoString: string): string {
 
 @media (min-width: 769px) {
   .sessions-sidebar {
-    left: 0;
+    left: 200px;
     z-index: 80;
   }
 
@@ -251,7 +252,7 @@ function formatTime(isoString: string): string {
   justify-content: space-between;
   align-items: center;
   padding: 16px;
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid #e6dfd8;
 }
 
 .sessions-header h3 {
@@ -263,7 +264,7 @@ function formatTime(isoString: string): string {
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: #2196F3;
+  background: #cc785c;
   color: white;
   border: none;
   cursor: pointer;
@@ -271,10 +272,11 @@ function formatTime(isoString: string): string {
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: background 0.15s;
 }
 
 .new-session-btn:hover {
-  background: #1976D2;
+  background: #a9583e;
 }
 
 .sessions-list {
@@ -291,14 +293,17 @@ function formatTime(isoString: string): string {
   border-radius: 8px;
   cursor: pointer;
   margin-bottom: 4px;
+  border-left: 3px solid transparent;
+  transition: background 0.15s;
 }
 
 .session-item:hover {
-  background: #f5f5f5;
+  background: #efe9de;
 }
 
 .session-item.active {
-  background: #e3f2fd;
+  background: transparent;
+  border-left-color: #cc785c;
 }
 
 .session-info {
@@ -415,7 +420,7 @@ function formatTime(isoString: string): string {
 
 @media (min-width: 769px) {
   .chat-main {
-    margin-left: 280px;
+    margin-left: 480px;
   }
 }
 
@@ -518,16 +523,16 @@ function formatTime(isoString: string): string {
 .input-wrapper {
   display: flex;
   align-items: center;
-  background: white;
-  border: 1.5px solid #e0e0e0;
+  background: #faf9f5;
+  border: 1.5px solid #e6dfd8;
   border-radius: 24px;
-  padding: 0 8px 0 20px;
+  padding: 0 6px 0 20px;
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .input-wrapper:focus-within {
-  border-color: #2196F3;
-  box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.08);
+  border-color: #cc785c;
+  box-shadow: 0 0 0 3px rgba(204, 120, 92, 0.08);
 }
 
 .input-wrapper input {
@@ -537,16 +542,17 @@ function formatTime(isoString: string): string {
   padding: 14px 0;
   font-size: 15px;
   background: transparent;
-  color: #333;
+  color: #141413;
   min-width: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 .input-wrapper input::placeholder {
-  color: #bbb;
+  color: #6c6a64;
 }
 
 .input-wrapper input:disabled {
-  color: #999;
+  color: #6c6a64;
   cursor: not-allowed;
 }
 
@@ -554,21 +560,21 @@ function formatTime(isoString: string): string {
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: #f5f5f5;
-  border: 1px solid #e0e0e0;
+  background: #efe9de;
+  border: 1px solid #e6dfd8;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #666;
+  color: #3d3d3a;
   flex-shrink: 0;
   transition: all 0.15s;
 }
 
 .stop-btn:hover {
-  background: #ffeeee;
-  border-color: #f44336;
-  color: #f44336;
+  background: #ffebee;
+  border-color: #c64545;
+  color: #c64545;
 }
 
 @media (max-width: 768px) {

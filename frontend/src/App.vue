@@ -41,9 +41,9 @@ function toggleSidebar() {
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background: #f5f5f5;
-  color: #333;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: #faf9f5;
+  color: #141413;
 }
 
 #app {
@@ -60,8 +60,8 @@ body {
 @media (min-width: 769px) {
   .sidebar {
     width: 200px;
-    background: white;
-    border-right: 1px solid #e0e0e0;
+    background: #faf9f5;
+    border-right: 1px solid #e6dfd8;
     position: fixed;
     left: 0;
     top: 0;
@@ -134,9 +134,10 @@ body {
     top: 0;
     bottom: 0;
     width: 200px;
-    background: white;
+    background: #faf9f5;
     z-index: 300;
     transition: left 0.3s;
+    border-right: 1px solid #e6dfd8;
   }
 
   .sidebar.open {
@@ -157,15 +158,22 @@ body {
 
 .sidebar-link {
   padding: 16px 24px;
-  color: #666;
+  color: #3d3d3a;
   text-decoration: none;
   border-left: 3px solid transparent;
   display: block;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.sidebar-link:hover {
+  color: #141413;
+  background: #efe9de;
 }
 
 .sidebar-link.active {
-  color: #2196F3;
-  border-left-color: #2196F3;
-  background: #f5f5f5;
+  color: #cc785c;
+  border-left-color: #cc785c;
+  background: transparent;
 }
 </style>

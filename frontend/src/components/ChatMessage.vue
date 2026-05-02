@@ -140,28 +140,29 @@ function fallbackCopy(text: string) {
   color: #333;
 }
 .user .message-content {
-  background: #2196F3;
+  background: #cc785c;
   color: white;
   border-bottom-right-radius: 4px;
 }
 .assistant .message-content {
-  background: white;
-  color: #333;
+  background: #faf9f5;
+  color: #141413;
   border-bottom-left-radius: 4px;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  box-shadow: none;
 }
 .assistant .message-content :deep(pre) {
-  background: #f5f5f5;
+  background: #181715;
   padding: 12px;
   border-radius: 6px;
   overflow-x: auto;
   margin: 8px 0;
 }
 .assistant .message-content :deep(code) {
-  background: #f5f5f5;
+  background: #181715;
+  color: #faf9f5;
   padding: 2px 6px;
   border-radius: 4px;
-  font-family: 'Courier New', monospace;
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
   font-size: 0.9em;
 }
 .assistant .message-content :deep(pre code) {
