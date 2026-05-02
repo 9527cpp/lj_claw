@@ -1,15 +1,57 @@
 import httpx
 import json
 import re
+from datetime import datetime
 from typing import AsyncGenerator, List, Dict, Any, Optional, Tuple
 from services.weather import WeatherService
 from services.skill_loader import SkillLoader
+from services.web_search import get_search_service
+
+# Keywords that indicate a query needs real-time / factual information
+REALTIME_QUERY_PATTERNS = [
+    r"现在\s*几",
+    r"今天\s*几号",
+    r"今天\s*是\s*哪",
+    r"当前\s*时间",
+    r"最新",
+    r"现在\s*在世",
+    r"去世了",
+    r"还在世",
+    r"去世.*吗",
+    r"有没有.*最新",
+    r"最近.*怎么了",
+    r"今天.*新闻",
+    r"现在.*消息",
+    r"实时",
+    r"当前.*状况",
+    r"截至?.*最新",
+    r"什么时候.*死的",
+    r"哪一年.*出生",
+    r"今年.*多大",
+    r"谁是.*现在",
+]
+
+
+def _needs_realtime_info(message: str) -> bool:
+    msg = message.lower()
+    for pattern in REALTIME_QUERY_PATTERNS:
+        if re.search(pattern, msg):
+            return True
+    return False
+
 
 class AgentService:
     def __init__(self):
         self.client = httpx.AsyncClient(timeout=60.0)
         self.weather_service = WeatherService()
         self.skill_loader = SkillLoader()
+        self._search = None  # lazy init
+
+    @property
+    def search(self):
+        if self._search is None:
+            self._search = get_search_service()
+        return self._search
 
     async def stream_chat(
         self,
@@ -48,6 +90,21 @@ class AgentService:
             weather_text = f"查询失败: {weather_info.get('error')}"
             enhanced_message = f"{message}\n\n[天气信息]: {weather_text}"
 
+        # Web search for real-time / factual questions
+        if _needs_realtime_info(message):
+            yield {"type": "thinking", "content": "正在搜索最新信息..."}
+            try:
+                search_results = await self.search.search(message, num_results=5)
+                if search_results:
+                    search_context = self._format_search_results(search_results)
+                    enhanced_message = f"{search_context}\n\n{enhanced_message}"
+            except Exception as e:
+                print(f"[agent] web search failed: {e}")
+
+        # Append current date/time context
+        now = datetime.now().strftime("%Y年%m月%d日 %H:%M:%S")
+        enhanced_message = f"[当前时间：{now}]\n\n{enhanced_message}"
+
         # Build skill context and inject into message
         skill_context = self.skill_loader.build_skill_context(skills)
         full_message = enhanced_message
@@ -66,6 +123,25 @@ class AgentService:
             yield {"type": "error", "content": f"Unsupported provider: {provider}"}
 
         yield {"type": "done"}
+
+    def _format_search_results(self, results: List[Dict[str, str]]) -> str:
+        """Format search results as a context block for the model."""
+        if not results:
+            return ""
+
+        lines = ["[网络搜索结果]"]
+        for i, r in enumerate(results, 1):
+            title = r.get("title", "").strip()
+            url = r.get("url", "").strip()
+            snippet = r.get("snippet", "").strip()
+            lines.append(f"{i}. {title}")
+            if snippet:
+                lines.append(f"   {snippet}")
+            if url:
+                lines.append(f"   来源: {url}")
+            lines.append("")
+
+        return "\n".join(lines)
 
     def _extract_location(self, message: str) -> Optional[str]:
         """Extract location from user message."""
@@ -120,7 +196,10 @@ class AgentService:
         url = f"{api_base.rstrip('/')}/chat/completions"
 
         # Build messages with system prompt for skills
-        system_content = "你是一个有用的AI助手。"
+        system_content = (
+            "你是一个有用的AI助手。注意：如果用户问及时事、新闻、最新数据、生平信息等问题，"
+            "请先通过网络搜索获取最新信息再回答，不要仅凭训练数据作答。"
+        )
         if skill_context:
             system_content += f"\n\n以下是可供使用的技能指引，请严格按照技能要求执行:\n{skill_context}"
 
@@ -161,7 +240,10 @@ class AgentService:
         import json as json_module
         url = f"{api_base.rstrip('/')}/v1/messages"
 
-        system_content = "你是一个有用的AI助手。"
+        system_content = (
+            "你是一个有用的AI助手。注意：如果用户问及时事、新闻、最新数据、生平信息等问题，"
+            "请先通过网络搜索获取最新信息再回答，不要仅凭训练数据作答。"
+        )
         if skill_context:
             system_content += f"\n\n以下是可供使用的技能指引，请严格按照技能要求执行:\n{skill_context}"
 
@@ -202,3 +284,5 @@ class AgentService:
     async def close(self):
         await self.client.aclose()
         await self.weather_service.close()
+        if self._search:
+            await self._search.close()

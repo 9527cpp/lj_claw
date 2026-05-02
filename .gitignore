@@ -8,3 +8,4 @@ frontend/node_modules/.vite/
 frontend/node_modules/@types/marked/
 frontend/node_modules/marked/
 *.pyc
+data/brave_search_key
