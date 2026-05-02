@@ -1128,7 +1128,7 @@
     {
       "id": "zhangxuefeng_skill",
       "name": "张雪峰 · 思维操作系统",
-      "enabled": true,
+      "enabled": false,
       "config": {}
     },
     {
